@@ -29,6 +29,7 @@ namespace SynNPCPotions
             lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
 
             // here add specific pack of leveled entries inside, maybe set in settings
+            // entries can be many, from some lists from patcher settings
             var LVLIEntrieHealth = new LeveledItemEntry
             {
                 Data = new LeveledItemEntryData
@@ -38,6 +39,7 @@ namespace SynNPCPotions
                     Reference = lItemPotionRestoreHealth.Record.ToLink()
                 }
             };
+            lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
 
             // set in main list
             var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
@@ -59,6 +61,8 @@ namespace SynNPCPotions
             {
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
+
+
 
         }
     }
