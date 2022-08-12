@@ -79,6 +79,7 @@ namespace SynNPCPotions
                     Item = new ContainerItem()
                 };
                 entrie.Item.Item.FormKey = lVLIToAdd.FormKey;
+                entrie.Item.Count = 1;
                 npcEdit.Items.Add(entrie);
             }
 
