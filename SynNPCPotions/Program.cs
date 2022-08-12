@@ -62,7 +62,10 @@ namespace SynNPCPotions
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
 
+            foreach(var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
+            {
 
+            }
 
         }
     }
