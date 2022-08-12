@@ -64,7 +64,11 @@ namespace SynNPCPotions
 
             foreach(var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
             {
+                if (npcGetterContext == null) continue;
 
+                var npcGetter = npcGetterContext.Record;
+
+                if (npcGetter.Template != null && !npcGetter.Template.IsNull && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
             }
 
         }
