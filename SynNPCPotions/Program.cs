@@ -69,6 +69,16 @@ namespace SynNPCPotions
                 var npcGetter = npcGetterContext.Record;
 
                 if (npcGetter.Template != null && !npcGetter.Template.IsNull && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
+
+                var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
+
+                if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
+
+                var entrie = new ContainerEntry
+                {
+                    Item = new ContainerItem()
+                };
+                entrie.Item.Item.FormKey = lVLIToAdd.FormKey;
             }
 
         }
