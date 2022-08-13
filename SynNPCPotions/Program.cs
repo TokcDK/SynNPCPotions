@@ -79,18 +79,25 @@ namespace SynNPCPotions
                 bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
                 if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
 
+                // skip by keywords
                 var kwNpc = npcGetter;
                 if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
                 {
                     kwNpc = untemplatedKeywords;
                 }
+                if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
 
-                if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue; // ignore npc by keyword
+                // skip by factions
+                var facNpc = npcGetter;
+                if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
+                {
+                    facNpc = untemplatedFactions;
+                }
+                if (facNpc.Factions != null && facNpc.Factions.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
 
+                // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
-
                 if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
-
                 var entrie = new ContainerEntry
                 {
                     Item = new ContainerItem()
