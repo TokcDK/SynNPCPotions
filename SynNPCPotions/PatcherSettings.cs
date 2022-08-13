@@ -9,10 +9,13 @@ namespace SynNPCPotions
     {
         [SynthesisOrder]
         [SynthesisTooltip("Count of possible item packs")]
-        public int PotionsCount = 3;
+        public int PotionsCount = 5;
         [SynthesisOrder]
         [SynthesisTooltip("Chance to appear of item from each pack")]
-        public int ChanceOfEach = 75;
+        public int ChanceOfEach = 90;
+        [SynthesisOrder]
+        [SynthesisTooltip("List of mods to skip if npc from any of them")]
+        public HashSet<ModKey> OriginModsToSKip = new();
         [SynthesisOrder]
         [SynthesisTooltip("If will found any npc keyword from here, will skip npc")]
         public HashSet<FormLink<IKeywordGetter>> NpcKeywordsToSkip = new()
@@ -30,7 +33,7 @@ namespace SynNPCPotions
             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.CreatureFaction,
         };
         [SynthesisOrder]
-        [SynthesisTooltip("Strings data determine npc ignore by editor id")]
+        [SynthesisTooltip("Configuration flags list to skip npcs with attached any of them")]
         public HashSet<NpcConfigurationFlag> FlagsToSkip = new()
         {
              new NpcConfigurationFlag(){Flag=NpcConfiguration.Flag.IsGhost},
@@ -54,6 +57,7 @@ namespace SynNPCPotions
 
     public class NpcConfigurationFlag
     {
+        [SynthesisTooltip("Configuration flag to skip npc")]
         public NpcConfiguration.Flag Flag;
     }
 }
