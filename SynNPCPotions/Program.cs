@@ -74,10 +74,18 @@ namespace SynNPCPotions
                 if (npcGetter == null) continue;
                 if (npcGetter.IsDeleted) continue;
 
-                if (npcGetter.Configuration.Flags.HasFlag( NpcConfiguration.Flag.IsGhost)) continue; // ghosts not using potions
+                if (npcGetter.Configuration.Flags.HasFlag(NpcConfiguration.Flag.IsGhost)) continue; // ghosts not using potions
 
                 bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
                 if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
+
+                var kwNpc = npcGetter;
+                if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
+                {
+                    kwNpc = untemplatedKeywords;
+                }
+
+                if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue; // ignore npc by keyword
 
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
 
