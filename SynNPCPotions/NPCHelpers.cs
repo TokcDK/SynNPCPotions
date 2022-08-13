@@ -39,7 +39,6 @@ namespace SkyrimNPCHelpers
             if (npcGetter.Template == null || !npcGetter.Configuration.TemplateFlags.HasFlag(templateFlag)) return npcGetter;
 
             if (npcGetter.Template.IsNull
-                //|| npcGetter.Template.FormKey.IsNull
                 || !npcGetter.Template.TryResolve(linkCache, out var templateNpcSpawnGetter)
                 || templateNpcSpawnGetter is not INpcGetter templateNpcGetter
                 )

@@ -69,12 +69,9 @@ namespace SynNPCPotions
             FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
 
             int patchedNpcCount = 0;
-            foreach (var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
+            foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
                 // skip invalid
-                if (npcGetterContext == null) continue;
-
-                var npcGetter = npcGetterContext.Record;
                 if (npcGetter == null) continue;
                 if (npcGetter.IsDeleted) continue;
                 if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
