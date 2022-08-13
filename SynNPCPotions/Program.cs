@@ -93,7 +93,7 @@ namespace SynNPCPotions
                 {
                     facNpc = untemplatedFactions;
                 }
-                if (facNpc.Factions != null && facNpc.Factions.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
+                if (facNpc.Factions != null && facNpc.Factions.Any(f => Settings.Value.NpcFactionsToSkip.Contains(f.Faction))) continue;
 
                 // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
