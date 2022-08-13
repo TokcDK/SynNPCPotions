@@ -79,7 +79,8 @@ namespace SynNPCPotions
                 if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
                 if (settings.OriginModsToSKip.Contains(npcGetter.FormKey.ModKey)) continue; // ignore npc by origin mod
                 if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) continue; // ignore by configuration flags list                
-                if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSKip)) continue; // ignore by editor id ignore list
+                if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSkip.SkipList)) continue; // ignore by editor id ignore list
+                if (settings.EDIDsToSkip.CheckNpcName && npcGetter.Name!=null && npcGetter.Name.String.HasAnyFromList(settings.EDIDsToSkip.SkipList)) continue; // ignore by editor id ignore list
                 bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
                 if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
                 // skip by keywords. slow!

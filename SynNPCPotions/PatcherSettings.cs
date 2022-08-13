@@ -41,8 +41,14 @@ namespace SynNPCPotions
              new NpcConfigurationFlag(){Flag=NpcConfiguration.Flag.Summonable},
         };
         [SynthesisOrder]
+        [SynthesisTooltip("Settings to skip by editor id and name")]
+        public EDIDSkipSettings EDIDsToSkip = new();
+    }
+    public class EDIDSkipSettings
+    {
+        [SynthesisOrder]
         [SynthesisTooltip("Strings data determine npc ignore by editor id")]
-        public HashSet<StringCompareSettingGroup> EDIDsToSKip = new()
+        public HashSet<StringCompareSettingGroup> SkipList = new()
         {
             new StringCompareSettingGroup()
             {
@@ -53,6 +59,9 @@ namespace SynNPCPotions
                 }
             }
         };
+        [SynthesisOrder]
+        [SynthesisTooltip("Check also npc name using skip list")]
+        public bool CheckNpcName = true;
     }
 
     public class NpcConfigurationFlag
