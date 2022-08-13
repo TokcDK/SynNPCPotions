@@ -69,6 +69,8 @@ namespace SynNPCPotions
                 if (npcGetterContext == null) continue;
 
                 var npcGetter = npcGetterContext.Record;
+                if (npcGetter == null) continue;
+                if (npcGetter.IsDeleted) continue;
 
                 if (npcGetter.Template != null && !npcGetter.Template.IsNull && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
 
