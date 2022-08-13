@@ -76,7 +76,7 @@ namespace SynNPCPotions
                 if (npcGetter.IsDeleted) continue;
                 if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
 
-                if (Settings.Value.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag))) continue; // ignore by configuration flags list
+                if (Settings.Value.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) continue; // ignore by configuration flags list
                 
                 if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(Settings.Value.EDIDsToSKip)) continue; // ignore by editor id ignore list
 

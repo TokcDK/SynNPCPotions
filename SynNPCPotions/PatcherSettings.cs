@@ -2,7 +2,6 @@
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis.Settings;
 using StringCompareSettings;
-using System.Collections.Generic;
 
 namespace SynNPCPotions
 {
@@ -32,16 +31,16 @@ namespace SynNPCPotions
         };
         [SynthesisOrder]
         [SynthesisTooltip("Strings data determine npc ignore by editor id")]
-        public HashSet<NpcConfiguration.Flag> FlagsToSkip = new()
+        public HashSet<NpcConfigurationFlag> FlagsToSkip = new()
         {
-             NpcConfiguration.Flag.IsGhost,
-             NpcConfiguration.Flag.IsCharGenFacePreset,
-             NpcConfiguration.Flag.Summonable,
+             new NpcConfigurationFlag(){Flag=NpcConfiguration.Flag.IsGhost},
+             new NpcConfigurationFlag(){Flag=NpcConfiguration.Flag.IsCharGenFacePreset},
+             new NpcConfigurationFlag(){Flag=NpcConfiguration.Flag.Summonable},
         };
         [SynthesisOrder]
         [SynthesisTooltip("Strings data determine npc ignore by editor id")]
         public HashSet<StringCompareSettingGroup> EDIDsToSKip = new()
-        { 
+        {
             new StringCompareSettingGroup()
             {
                 StringsList = new List<StringCompareSetting>()
@@ -51,5 +50,10 @@ namespace SynNPCPotions
                 }
             }
         };
+    }
+
+    public class NpcConfigurationFlag
+    {
+        public NpcConfiguration.Flag Flag;
     }
 }
