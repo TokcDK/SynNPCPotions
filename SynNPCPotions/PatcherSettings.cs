@@ -53,7 +53,44 @@ namespace SynNPCPotions
         };
         [SynthesisOrder]
         [SynthesisTooltip("Settings to skip by editor id and name")]
+        [SynthesisSettingName("EDIDsToSkip")]
         public EDIDSkipSettings EDIDsToSkip = new();
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
+        public HashSet<CustomPackData> CustomPacksByEDID = new();
+    }
+    public class CustomPackData
+    {
+        [SynthesisOrder]
+        [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
+        public HashSet<StringCompareSettingGroup> EDIDCheckList = new();
+        [SynthesisOrder]
+        [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
+        public bool CheckNpcName = true;
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom items count")]
+        public int Count = 1;
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom appear chance of each item")]
+        public int Chance = 10;
+        [SynthesisOrder]
+        [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
+        public CustomPackDataItems Items = new();
+    }
+    public class CustomPackDataItems
+    {
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom leveled item lists to add")]
+        public List<ILeveledItemGetter> LeveledItems = new();
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom items to add")]
+        public List<IItemGetter> Items = new();
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom armors to add?")]
+        public List<IArmorGetter> Armors = new();
+        [SynthesisOrder]
+        [SynthesisTooltip("Custom weapons to add?")]
+        public List<IWeaponGetter> Weapons = new();
     }
     public class EDIDSkipSettings
     {
