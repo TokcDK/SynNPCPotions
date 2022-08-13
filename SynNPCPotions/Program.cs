@@ -2,6 +2,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
+using SkyrimNPCHelpers;
 
 namespace SynNPCPotions
 {
@@ -66,13 +67,17 @@ namespace SynNPCPotions
 
             foreach (var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
             {
+                // skip invalid
                 if (npcGetterContext == null) continue;
 
                 var npcGetter = npcGetterContext.Record;
                 if (npcGetter == null) continue;
                 if (npcGetter.IsDeleted) continue;
 
-                if (npcGetter.Template != null && !npcGetter.Template.IsNull && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
+                if (npcGetter.Configuration.Flags.HasFlag( NpcConfiguration.Flag.IsGhost)) continue; // ghosts not using potions
+
+                bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
+                if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
 
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
 
