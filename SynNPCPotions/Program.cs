@@ -2,7 +2,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
-using SkyrimNPCHelpers;
+using StringCompareSettings;
 
 namespace SynNPCPotions
 {
@@ -67,6 +67,8 @@ namespace SynNPCPotions
 
             bool isCheckPlayer = true;
             FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
+
+            int patchedNpcCount = 0;
             foreach (var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
             {
                 // skip invalid
@@ -77,26 +79,32 @@ namespace SynNPCPotions
                 if (npcGetter.IsDeleted) continue;
                 if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
 
-                if (npcGetter.Configuration.Flags.HasFlag(NpcConfiguration.Flag.IsGhost)) continue; // ghosts not using potions
+                if (Settings.Value.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag))) continue; // ignore by configuration flags list
+                
+                if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(Settings.Value.EDIDsToSKip)) continue; // ignore by editor id ignore list
 
                 bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
                 if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
 
                 // skip by keywords
-                var kwNpc = npcGetter;
-                if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
-                {
-                    kwNpc = untemplatedKeywords;
-                }
-                if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
+                //var kwNpc = npcGetter;
+                //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
+                //{
+                //    kwNpc = untemplatedKeywords;
+                //}
+                //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
+                if (npcGetter.Keywords != null && npcGetter.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
 
                 // skip by factions
-                var facNpc = npcGetter;
-                if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
-                {
-                    facNpc = untemplatedFactions;
-                }
-                if (facNpc.Factions != null && facNpc.Factions.Any(f => Settings.Value.NpcFactionsToSkip.Contains(f.Faction))) continue;
+                //var facNpc = npcGetter;
+                //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
+                //{
+                //    facNpc = untemplatedFactions;
+                //}
+                //if (facNpc.Factions != null && facNpc.Factions.Any(f => Settings.Value.NpcFactionsToSkip.Contains(f.Faction))) continue;
+                if (npcGetter.Factions != null && npcGetter.Factions.Any(f => Settings.Value.NpcFactionsToSkip.Contains(f.Faction))) continue;
+
+                patchedNpcCount++;
 
                 // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
@@ -110,6 +118,7 @@ namespace SynNPCPotions
                 npcEdit.Items.Add(entrie);
             }
 
+            Console.WriteLine($"Patched {patchedNpcCount} npc records.");
         }
     }
 }
