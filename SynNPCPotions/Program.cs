@@ -20,13 +20,15 @@ namespace SynNPCPotions
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
+            var settings = Settings.Value;
+
             var lItemPotionRestoreHealthFormKey = FormKey.Factory("03A16A:Skyrim.esm"); // example leveled list of health restore potions
             var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey);
 
             // create leveled itema list
             var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
             lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsHealthSub";
-            lVLIHealthPotions.ChanceNone = (byte)(100 - Settings.Value.ChanceOfEach); // here chance to add, 10% if 90
+            lVLIHealthPotions.ChanceNone = (byte)(100 - settings.ChanceOfEach); // here chance to add, 10% if 90
             lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
             lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
             lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
@@ -60,7 +62,7 @@ namespace SynNPCPotions
                     Reference = lVLIHealthPotions.ToLink() // set sublist with potions
                 }
             };
-            for (int i = 0; i < Settings.Value.PotionsCount; i++) // here we use count of added items
+            for (int i = 0; i < settings.PotionsCount; i++) // here we use count of added items
             {
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
@@ -76,9 +78,9 @@ namespace SynNPCPotions
                 if (npcGetter.IsDeleted) continue;
                 if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
 
-                if (Settings.Value.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) continue; // ignore by configuration flags list
+                if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) continue; // ignore by configuration flags list
                 
-                if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(Settings.Value.EDIDsToSKip)) continue; // ignore by editor id ignore list
+                if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSKip)) continue; // ignore by editor id ignore list
 
                 bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
                 if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
@@ -89,8 +91,8 @@ namespace SynNPCPotions
                 //{
                 //    kwNpc = untemplatedKeywords;
                 //}
-                //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
-                if (npcGetter.Keywords != null && npcGetter.Keywords.Any(k => Settings.Value.NpcKeywordsToSkip.Contains(k))) continue;
+                //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
+                if (npcGetter.Keywords != null && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
 
                 // skip by factions
                 //var facNpc = npcGetter;
@@ -98,8 +100,8 @@ namespace SynNPCPotions
                 //{
                 //    facNpc = untemplatedFactions;
                 //}
-                //if (facNpc.Factions != null && facNpc.Factions.Any(f => Settings.Value.NpcFactionsToSkip.Contains(f.Faction))) continue;
-                if (npcGetter.Factions != null && npcGetter.Factions.Any(f => Settings.Value.NpcFactionsToSkip.Contains(f.Faction))) continue;
+                //if (facNpc.Factions != null && facNpc.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
+                if (npcGetter.Factions != null && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
 
                 patchedNpcCount++;
 
