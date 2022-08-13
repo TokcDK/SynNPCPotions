@@ -67,38 +67,11 @@ namespace SynNPCPotions
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
 
-            bool isCheckPlayer = true;
-            FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
-
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
                 // skip invalid
-                if (npcGetter == null) continue;
-                if (npcGetter.IsDeleted) continue;
-                if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
-                if (settings.OriginModsToSKip.Contains(npcGetter.FormKey.ModKey)) continue; // ignore npc by origin mod
-                if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) continue; // ignore by configuration flags list                
-                if (npcGetter.EditorID!=null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSkip.SkipList)) continue; // ignore by editor id ignore list
-                if (settings.EDIDsToSkip.CheckNpcName && npcGetter.Name!=null && npcGetter.Name.String.HasAnyFromList(settings.EDIDsToSkip.SkipList)) continue; // ignore by editor id ignore list
-                bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
-                if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) continue;
-                // skip by keywords. slow!
-                //var kwNpc = npcGetter;
-                //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
-                //{
-                //    kwNpc = untemplatedKeywords;
-                //}
-                //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
-                if (npcGetter.Keywords != null && !npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
-                // skip by factions. slow!
-                //var facNpc = npcGetter;
-                //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
-                //{
-                //    facNpc = untemplatedFactions;
-                //}
-                //if (facNpc.Factions != null && facNpc.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
-                if (npcGetter.Factions != null && !npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
+                if (!IsValidNpc(npcGetter, state, settings)) continue;
 
                 patchedNpcCount++;
 
@@ -115,6 +88,39 @@ namespace SynNPCPotions
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+        }
+
+        static bool isCheckPlayer = true;
+        static FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
+        private static bool IsValidNpc(INpcGetter npcGetter, IPatcherState<ISkyrimMod, ISkyrimModGetter> state, PatcherSettings settings)
+        {
+            if (npcGetter == null) return false;
+            if (npcGetter.IsDeleted) return false;
+            if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; return false; } // ignore player
+            if (settings.OriginModsToSKip.Contains(npcGetter.FormKey.ModKey)) return false; // ignore npc by origin mod
+            if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) return false; // ignore by configuration flags list                
+            if (npcGetter.EditorID != null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
+            if (settings.EDIDsToSkip.CheckNpcName && npcGetter.Name != null && npcGetter.Name.String.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
+            bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
+            if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) return false;
+            // skip by keywords. slow!
+            //var kwNpc = npcGetter;
+            //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
+            //{
+            //    kwNpc = untemplatedKeywords;
+            //}
+            //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
+            if (npcGetter.Keywords != null && !npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) return false;
+            // skip by factions. slow!
+            //var facNpc = npcGetter;
+            //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
+            //{
+            //    facNpc = untemplatedFactions;
+            //}
+            //if (facNpc.Factions != null && facNpc.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
+            if (npcGetter.Factions != null && !npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) return false;
+
+            return true;
         }
     }
 }
