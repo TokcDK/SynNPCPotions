@@ -90,7 +90,7 @@ namespace SynNPCPotions
                 //    kwNpc = untemplatedKeywords;
                 //}
                 //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
-                if (npcGetter.Keywords != null && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
+                if (npcGetter.Keywords != null && !npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
                 // skip by factions. slow!
                 //var facNpc = npcGetter;
                 //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
@@ -98,7 +98,7 @@ namespace SynNPCPotions
                 //    facNpc = untemplatedFactions;
                 //}
                 //if (facNpc.Factions != null && facNpc.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
-                if (npcGetter.Factions != null && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
+                if (npcGetter.Factions != null && !npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
 
                 patchedNpcCount++;
 
