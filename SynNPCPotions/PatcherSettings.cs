@@ -31,6 +31,17 @@ namespace SynNPCPotions
         public HashSet<FormLink<IFactionGetter>> NpcFactionsToSkip = new()
         {
             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.CreatureFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.PreyFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.PredatorFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.FarmAnimalsFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.FoxFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.WolfFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.SabreCatFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.DragonFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.MammothFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.AtronachFlameFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.AtronachFrostFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.AtronachStormFaction,
         };
         [SynthesisOrder]
         [SynthesisTooltip("Configuration flags list to skip npcs with attached any of them")]
@@ -56,6 +67,15 @@ namespace SynNPCPotions
                 {
                     new StringCompareSetting() { Name="VoiceType", Compare= CompareType.StartsWith },
                     new StringCompareSetting() { Name="AudioTemplate", Compare= CompareType.StartsWith },
+                    new StringCompareSetting() { Name="Dwarven", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Atronach", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Corpse", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Beggar", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Victim", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Prisoner", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Child", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="aaaBreed", Compare= CompareType.StartsWith },
+                    new StringCompareSetting() { Name="^.*Slave[^r]{0,1}.*$", Compare= CompareType.Regex, Comment="slave but not slaver"},
                 }
             }
         };
