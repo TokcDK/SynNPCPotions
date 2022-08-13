@@ -25,7 +25,7 @@ namespace SynNPCPotions
             // create leveled itema list
             var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
             lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsHealthSub";
-            lVLIHealthPotions.ChanceNone = 90; // here chance to add, 10% if 90
+            lVLIHealthPotions.ChanceNone = (byte)(100 - Settings.Value.ChanceOfEach); // here chance to add, 10% if 90
             lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
             lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
             lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
@@ -59,12 +59,12 @@ namespace SynNPCPotions
                     Reference = lVLIHealthPotions.ToLink() // set sublist with potions
                 }
             };
-            for (int i = 0; i < 5; i++) // here we use count of added items
+            for (int i = 0; i < Settings.Value.PotionsCount; i++) // here we use count of added items
             {
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
 
-            foreach(var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
+            foreach (var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
             {
                 if (npcGetterContext == null) continue;
 
