@@ -65,6 +65,8 @@ namespace SynNPCPotions
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
 
+            bool isCheckPlayer = true;
+            FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
             foreach (var npcGetterContext in state.LoadOrder.PriorityOrder.Npc().WinningContextOverrides())
             {
                 // skip invalid
@@ -73,6 +75,7 @@ namespace SynNPCPotions
                 var npcGetter = npcGetterContext.Record;
                 if (npcGetter == null) continue;
                 if (npcGetter.IsDeleted) continue;
+                if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; continue; } // ignore player
 
                 if (npcGetter.Configuration.Flags.HasFlag(NpcConfiguration.Flag.IsGhost)) continue; // ghosts not using potions
 
