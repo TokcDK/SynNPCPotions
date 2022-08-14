@@ -1,5 +1,6 @@
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
+using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
 using StringCompareSettings;
@@ -21,14 +22,49 @@ namespace SynNPCPotions
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var settings = Settings.Value;
-
             var lItemPotionRestoreHealthFormKey = FormKey.Factory("03A16A:Skyrim.esm"); // example leveled list of health restore potions
             var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey);
 
+            // set in main list
+            var lVLIToAdd = SetLLI(state, lItemPotionRestoreHealth.Record.ToLink(), Settings.Value.ChanceOfEach, Settings.Value.PotionsCount);
+
+            int patchedNpcCount = 0;
+            foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
+            {
+                // skip invalid
+                if (!IsValidNpc(npcGetter, state, settings)) continue;
+
+                patchedNpcCount++;
+
+                foreach(var customPack in settings.CustomPacks)
+                {
+                    break;
+                    if (!npcGetter.EditorID.HasAnyFromList(customPack.EDIDCheckList)) continue;
+
+
+                }
+
+                // add potions list
+                var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
+                if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
+                var entrie = new ContainerEntry
+                {
+                    Item = new ContainerItem()
+                };
+                entrie.Item.Item.FormKey = lVLIToAdd.FormKey;
+                entrie.Item.Count = 1;
+                npcEdit.Items.Add(entrie);
+            }
+
+            Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+        }
+
+        private static LeveledItem SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IFormLink<IItemGetter> itemForAdd, int chanceOfEach, int potionsCount)
+        {
             // create leveled itema list
             var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
-            lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsHealthSub";
-            lVLIHealthPotions.ChanceNone = (byte)(100 - settings.ChanceOfEach); // here chance to add, 10% if 90
+            lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsSub";
+            lVLIHealthPotions.ChanceNone = (byte)(100 - chanceOfEach); // here chance to add, 10% if 90
             lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
             lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
             lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
@@ -41,12 +77,11 @@ namespace SynNPCPotions
                 {
                     Level = 1,
                     Count = 1,
-                    Reference = lItemPotionRestoreHealth.Record.ToLink()
+                    Reference = itemForAdd
                 }
             };
             lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
 
-            // set in main list
             var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
             lVLIToAdd.EditorID = "LItemGeneratedNPCPotions";
             lVLIToAdd.ChanceNone = 0; // 100%
@@ -62,32 +97,12 @@ namespace SynNPCPotions
                     Reference = lVLIHealthPotions.ToLink() // set sublist with potions
                 }
             };
-            for (int i = 0; i < settings.PotionsCount; i++) // here we use count of added items
+            for (int i = 0; i < potionsCount; i++) // here we use count of added items
             {
                 lVLIToAdd.Entries.Add(LVLIEntrie);
             }
 
-            int patchedNpcCount = 0;
-            foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
-            {
-                // skip invalid
-                if (!IsValidNpc(npcGetter, state, settings)) continue;
-
-                patchedNpcCount++;
-
-                // add potions list
-                var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
-                if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
-                var entrie = new ContainerEntry
-                {
-                    Item = new ContainerItem()
-                };
-                entrie.Item.Item.FormKey = lVLIToAdd.FormKey;
-                entrie.Item.Count = 1;
-                npcEdit.Items.Add(entrie);
-            }
-
-            Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+            return lVLIToAdd;
         }
 
         static bool isCheckPlayer = true;
