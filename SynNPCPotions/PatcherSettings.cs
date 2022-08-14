@@ -59,6 +59,7 @@ namespace SynNPCPotions
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
         public HashSet<CustomPackData> CustomPacks = new();
     }
+
     public class CustomPackData
     {
         [SynthesisOrder]
@@ -68,30 +69,24 @@ namespace SynNPCPotions
         [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
         public bool CheckNpcName = true;
         [SynthesisOrder]
-        [SynthesisTooltip("Custom items count")]
-        public int Count = 1;
-        [SynthesisOrder]
-        [SynthesisTooltip("Custom appear chance of each item")]
-        public int Chance = 10;
-        [SynthesisOrder]
-        [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
-        public CustomPackDataItems Items = new();
+        [SynthesisTooltip("Count of times to add utems in list")]
+        public HashSet<CustomItems> ItemsToAdd = new();
+
     }
-    public class CustomPackDataItems
+
+    public class CustomItems
     {
         [SynthesisOrder]
-        [SynthesisTooltip("Custom leveled item lists to add")]
-        public List<FormLink<ILeveledItemGetter>> LeveledItems = new();
+        [SynthesisTooltip($"Count of {nameof(Item)}")]
+        public int Count = 1;
         [SynthesisOrder]
-        [SynthesisTooltip("Custom items to add")]
-        public List<FormLink<IItemGetter>> Items = new();
+        [SynthesisTooltip($"Appear chance of {nameof(Item)}")]
+        public int Chance = 10;
         [SynthesisOrder]
-        [SynthesisTooltip("Custom armors to add?")]
-        public List<FormLink<IArmorGetter>> Armors = new();
-        [SynthesisOrder]
-        [SynthesisTooltip("Custom weapons to add?")]
-        public List<FormLink<IWeaponGetter>> Weapons = new();
+        [SynthesisTooltip($"Item for add")]
+        public FormLink<IItemGetter> Item = new();
     }
+
     public class EDIDSkipSettings
     {
         [SynthesisOrder]
