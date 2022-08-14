@@ -1,6 +1,5 @@
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
-using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
 using StringCompareSettings;
@@ -23,10 +22,19 @@ namespace SynNPCPotions
         {
             var settings = Settings.Value;
             var lItemPotionRestoreHealthFormKey = FormKey.Factory("03A16A:Skyrim.esm"); // example leveled list of health restore potions
-            var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey);
+            var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey).Record;
 
             // set in main list
-            var lVLIToAdd = SetLLI(state, lItemPotionRestoreHealth.Record.ToLink(), Settings.Value.ChanceOfEach, Settings.Value.PotionsCount);
+            //var lVLIToAdd = SetLLI(state, lItemPotionRestoreHealth.Record.ToLink(), Settings.Value.ChanceOfEach, Settings.Value.PotionsCount);
+            var item = new CustomItem()
+            {
+                Item = (FormLink<IItemGetter>)(lItemPotionRestoreHealth as IItemGetter).ToLink(),
+                LLICount = 1,
+                LLIChance = 10,
+                InstancesCount = 5,
+            };
+            List<CustomItem> items = new() { item };
+
 
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
@@ -36,13 +44,18 @@ namespace SynNPCPotions
 
                 patchedNpcCount++;
 
-                foreach(var customPack in settings.CustomPacks)
+                bool isFound = false;
+                var lVLIToAddFormKey = FormKey.Null;
+                foreach (var customPack in settings.CustomPacks)
                 {
-                    break;
                     if (!npcGetter.EditorID.HasAnyFromList(customPack.EDIDCheckList)) continue;
 
+                    lVLIToAddFormKey = SetLLI(state, customPack.ItemsToAdd);
 
+                    isFound = true;
+                    break;
                 }
+                if(!isFound) lVLIToAddFormKey = SetLLI(state, items);
 
                 // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
@@ -51,7 +64,7 @@ namespace SynNPCPotions
                 {
                     Item = new ContainerItem()
                 };
-                entrie.Item.Item.FormKey = lVLIToAdd.FormKey;
+                entrie.Item.Item.FormKey = lVLIToAddFormKey;
                 entrie.Item.Count = 1;
                 npcEdit.Items.Add(entrie);
             }
@@ -59,51 +72,113 @@ namespace SynNPCPotions
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
         }
 
-        private static LeveledItem SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IFormLink<IItemGetter> itemForAdd, int chanceOfEach, int potionsCount)
+        private static FormKey SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IEnumerable<CustomItem> itemsData)
         {
-            // create leveled itema list
-            var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
-            lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsSub";
-            lVLIHealthPotions.ChanceNone = (byte)(100 - chanceOfEach); // here chance to add, 10% if 90
-            lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
-            lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
-            lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+            var itemLLists = new List<IFormLink<IItemGetter>>();
 
-            // here add specific pack of leveled entries inside, maybe set in settings
-            // entries can be many, from some lists from patcher settings
-            var LVLIEntrieHealth = new LeveledItemEntry
+            foreach (var itemData in itemsData)
             {
-                Data = new LeveledItemEntryData
+                // create leveled itema list
+                var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
+                lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsSub" + "I" + itemData.Item.FormKey.ToString().Remove(6, 1) + "C" + itemData.LLICount + "P" + itemData.LLIChance; // "LItemGeneratedNPCPotionsSub";
+                lVLIHealthPotions.ChanceNone = (byte)(100 - itemData.LLIChance); // here chance to add, 10% if 90
+                foreach (var flagData in itemData.LLIFlags) lVLIHealthPotions.Flags |= flagData.Flag;
+                //lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
+                //lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
+                lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+                // fix count chance
+                if (itemData.LLILevel <= 0) itemData.LLILevel = 1;
+                if (itemData.LLICount <= 0) itemData.LLICount = 1;
+
+                // here add specific pack of leveled entries inside, maybe set in settings
+                // entries can be many, from some lists from patcher settings
+                var LVLIEntrieHealth = new LeveledItemEntry
                 {
-                    Level = 1,
-                    Count = 1,
-                    Reference = itemForAdd
+                    Data = new LeveledItemEntryData
+                    {
+                        Level = (short)itemData.LLILevel,
+                        Count = (short)itemData.LLICount,
+                        Reference = itemData.Item
+                    }
+                };
+                lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
+
+                // add instances
+                for (int i = 0; i < itemData.InstancesCount; i++)
+                {
+                    itemLLists.Add(lVLIHealthPotions.ToLink());
                 }
-            };
-            lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
+            }
+
 
             var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
             lVLIToAdd.EditorID = "LItemGeneratedNPCPotions";
             lVLIToAdd.ChanceNone = 0; // 100%
             lVLIToAdd.Flags |= LeveledItem.Flag.UseAll; // all record will be calculated
+            lVLIToAdd.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // all record will be calculated
             lVLIToAdd.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
 
-            var LVLIEntrie = new LeveledItemEntry
+            foreach(var lliLink in itemLLists)
             {
-                Data = new LeveledItemEntryData
+                var LVLIEntrie = new LeveledItemEntry
                 {
-                    Level = 1,
-                    Count = 1,
-                    Reference = lVLIHealthPotions.ToLink() // set sublist with potions
-                }
-            };
-            for (int i = 0; i < potionsCount; i++) // here we use count of added items
-            {
-                lVLIToAdd.Entries.Add(LVLIEntrie);
+                    Data = new LeveledItemEntryData
+                    {
+                        Level = 1,
+                        Count = 1,
+                        Reference = lliLink // set sublist with potions
+                    }
+                };
             }
 
-            return lVLIToAdd;
+            return lVLIToAdd.FormKey;
         }
+
+        //private static LeveledItem SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IFormLink<IItemGetter> itemForAdd, int chanceOfEach, int potionsCount)
+        //{
+        //    // create leveled itema list
+        //    var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
+        //    lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsSub";
+        //    lVLIHealthPotions.ChanceNone = (byte)(100 - chanceOfEach); // here chance to add, 10% if 90
+        //    lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
+        //    lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
+        //    lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+
+        //    // here add specific pack of leveled entries inside, maybe set in settings
+        //    // entries can be many, from some lists from patcher settings
+        //    var LVLIEntrieHealth = new LeveledItemEntry
+        //    {
+        //        Data = new LeveledItemEntryData
+        //        {
+        //            Level = 1,
+        //            Count = 1,
+        //            Reference = itemForAdd
+        //        }
+        //    };
+        //    lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
+
+        //    var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
+        //    lVLIToAdd.EditorID = "LItemGeneratedNPCPotions";
+        //    lVLIToAdd.ChanceNone = 0; // 100%
+        //    lVLIToAdd.Flags |= LeveledItem.Flag.UseAll; // all record will be calculated
+        //    lVLIToAdd.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+
+        //    var LVLIEntrie = new LeveledItemEntry
+        //    {
+        //        Data = new LeveledItemEntryData
+        //        {
+        //            Level = 1,
+        //            Count = 1,
+        //            Reference = lVLIHealthPotions.ToLink() // set sublist with potions
+        //        }
+        //    };
+        //    for (int i = 0; i < potionsCount; i++) // here we use count of added items
+        //    {
+        //        lVLIToAdd.Entries.Add(LVLIEntrie);
+        //    }
+
+        //    return lVLIToAdd;
+        //}
 
         static bool isCheckPlayer = true;
         static FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");

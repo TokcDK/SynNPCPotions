@@ -57,10 +57,10 @@ namespace SynNPCPotions
         public EDIDSkipSettings EDIDsToSkip = new();
         [SynthesisOrder]
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
-        public HashSet<CustomPackData> CustomPacks = new();
+        public HashSet<CustomPack> CustomPacks = new();
     }
 
-    public class CustomPackData
+    public class CustomPack
     {
         [SynthesisOrder]
         [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
@@ -69,22 +69,40 @@ namespace SynNPCPotions
         [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
         public bool CheckNpcName = true;
         [SynthesisOrder]
-        [SynthesisTooltip("Count of times to add utems in list")]
-        public HashSet<CustomItems> ItemsToAdd = new();
-
+        [SynthesisTooltip("Items list to add")]
+        public HashSet<CustomItem> ItemsToAdd = new();
     }
 
-    public class CustomItems
+    public class CustomItem
     {
         [SynthesisOrder]
-        [SynthesisTooltip($"Count of {nameof(Item)}")]
-        public int Count = 1;
+        [SynthesisTooltip("Instances count of item record")]
+        public int InstancesCount = 1;
         [SynthesisOrder]
-        [SynthesisTooltip($"Appear chance of {nameof(Item)}")]
-        public int Chance = 10;
+        [SynthesisTooltip("Count of item record")]
+        public int LLILevel = 1;
         [SynthesisOrder]
-        [SynthesisTooltip($"Item for add")]
+        [SynthesisTooltip("Count of item record")]
+        public int LLICount = 1;
+        [SynthesisOrder]
+        [SynthesisTooltip("Appear chance of item")]
+        public int LLIChance = 10;
+        [SynthesisOrder]
+        [SynthesisTooltip("Item leveled list flags")]
+        public HashSet<ItemLLIFlag> LLIFlags = new()
+        {
+            new ItemLLIFlag() { Flag = LeveledItem.Flag.CalculateForEachItemInCount },
+            new ItemLLIFlag() { Flag = LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer },
+        };
+        [SynthesisOrder]
+        [SynthesisTooltip("Item for add")]
         public FormLink<IItemGetter> Item = new();
+    }
+
+    public class ItemLLIFlag
+    {
+        [SynthesisTooltip("Item leveled list flag")]
+        public LeveledItem.Flag Flag;
     }
 
     public class EDIDSkipSettings
