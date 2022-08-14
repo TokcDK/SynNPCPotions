@@ -95,8 +95,8 @@ namespace SynNPCPotions
             new ItemLLIFlag() { Flag = LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer },
         };
         [SynthesisOrder]
-        [SynthesisTooltip("Item for add")]
-        public FormLink<IItemGetter> Item = new();
+        [SynthesisTooltip("Items to add in the list")]
+        public HashSet<FormLink<IItemGetter>> Items = new();
     }
 
     public class ItemLLIFlag

@@ -28,13 +28,14 @@ namespace SynNPCPotions
             //var lVLIToAdd = SetLLI(state, lItemPotionRestoreHealth.Record.ToLink(), Settings.Value.ChanceOfEach, Settings.Value.PotionsCount);
             var item = new CustomItem()
             {
-                Item = (FormLink<IItemGetter>)(lItemPotionRestoreHealth as IItemGetter).ToLink(),
+                Items = new HashSet<FormLink<IItemGetter>>() { (FormLink<IItemGetter>)(lItemPotionRestoreHealth as IItemGetter).ToLink() },
                 LLICount = 1,
                 LLIChance = 10,
                 InstancesCount = 5,
             };
             List<CustomItem> items = new() { item };
 
+            var baselVLIToAddFormKey = SetLLI(state, items); // create base lli
 
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
@@ -46,6 +47,7 @@ namespace SynNPCPotions
 
                 bool isFound = false;
                 var lVLIToAddFormKey = FormKey.Null;
+                // search custom packs
                 foreach (var customPack in settings.CustomPacks)
                 {
                     if (!npcGetter.EditorID.HasAnyFromList(customPack.EDIDCheckList)) continue;
@@ -55,7 +57,7 @@ namespace SynNPCPotions
                     isFound = true;
                     break;
                 }
-                if(!isFound) lVLIToAddFormKey = SetLLI(state, items);
+                if(!isFound) lVLIToAddFormKey = baselVLIToAddFormKey; // set base to add instead
 
                 // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
@@ -79,34 +81,39 @@ namespace SynNPCPotions
             foreach (var itemData in itemsData)
             {
                 // create leveled itema list
-                var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
-                lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsSub" + "I" + itemData.Item.FormKey.ToString().Remove(6, 1) + "C" + itemData.LLICount + "P" + itemData.LLIChance; // "LItemGeneratedNPCPotionsSub";
-                lVLIHealthPotions.ChanceNone = (byte)(100 - itemData.LLIChance); // here chance to add, 10% if 90
-                foreach (var flagData in itemData.LLIFlags) lVLIHealthPotions.Flags |= flagData.Flag;
+                var lVLISub = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
+                lVLISub.EditorID = "LItemGeneratedNPCPotionsSub" + "I" + itemData.Items.First().FormKey.ToString().Remove(6, 1) + "C" + itemData.LLICount + "P" + itemData.LLIChance; // "LItemGeneratedNPCPotionsSub";
+                lVLISub.ChanceNone = (byte)(100 - itemData.LLIChance); // here chance to add, 10% if 90
+                foreach (var flagData in itemData.LLIFlags) lVLISub.Flags |= flagData.Flag;
                 //lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
                 //lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
-                lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+                lVLISub.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
                 // fix count chance
                 if (itemData.LLILevel <= 0) itemData.LLILevel = 1;
                 if (itemData.LLICount <= 0) itemData.LLICount = 1;
 
                 // here add specific pack of leveled entries inside, maybe set in settings
                 // entries can be many, from some lists from patcher settings
-                var LVLIEntrieHealth = new LeveledItemEntry
+                short level = (short)itemData.LLILevel;
+                short count = (short)itemData.LLICount;
+                foreach (var item in itemData.Items)
                 {
-                    Data = new LeveledItemEntryData
+                    var LVLIEntrie = new LeveledItemEntry
                     {
-                        Level = (short)itemData.LLILevel,
-                        Count = (short)itemData.LLICount,
-                        Reference = itemData.Item
-                    }
-                };
-                lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
+                        Data = new LeveledItemEntryData
+                        {
+                            Level = level,
+                            Count = count,
+                            Reference = item
+                        }
+                    };
+                    lVLISub.Entries.Add(LVLIEntrie);
+                }
 
                 // add instances
                 for (int i = 0; i < itemData.InstancesCount; i++)
                 {
-                    itemLLists.Add(lVLIHealthPotions.ToLink());
+                    itemLLists.Add(lVLISub.ToLink());
                 }
             }
 
@@ -120,7 +127,7 @@ namespace SynNPCPotions
 
             foreach(var lliLink in itemLLists)
             {
-                var LVLIEntrie = new LeveledItemEntry
+                var lVLIToAddEntrie = new LeveledItemEntry
                 {
                     Data = new LeveledItemEntryData
                     {
@@ -129,6 +136,8 @@ namespace SynNPCPotions
                         Reference = lliLink // set sublist with potions
                     }
                 };
+
+                lVLIToAdd.Entries.Add(lVLIToAddEntrie);
             }
 
             return lVLIToAdd.FormKey;
