@@ -57,7 +57,7 @@ namespace SynNPCPotions
         public EDIDSkipSettings EDIDsToSkip = new();
         [SynthesisOrder]
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
-        public HashSet<CustomPackData> CustomPacksByEDID = new();
+        public HashSet<CustomPackData> CustomPacks = new();
     }
     public class CustomPackData
     {
@@ -81,16 +81,16 @@ namespace SynNPCPotions
     {
         [SynthesisOrder]
         [SynthesisTooltip("Custom leveled item lists to add")]
-        public List<ILeveledItemGetter> LeveledItems = new();
+        public List<FormLink<ILeveledItemGetter>> LeveledItems = new();
         [SynthesisOrder]
         [SynthesisTooltip("Custom items to add")]
-        public List<IItemGetter> Items = new();
+        public List<FormLink<IItemGetter>> Items = new();
         [SynthesisOrder]
         [SynthesisTooltip("Custom armors to add?")]
-        public List<IArmorGetter> Armors = new();
+        public List<FormLink<IArmorGetter>> Armors = new();
         [SynthesisOrder]
         [SynthesisTooltip("Custom weapons to add?")]
-        public List<IWeaponGetter> Weapons = new();
+        public List<FormLink<IWeaponGetter>> Weapons = new();
     }
     public class EDIDSkipSettings
     {
