@@ -126,6 +126,7 @@ namespace SynNPCPotions
                     new StringCompareSetting() { Name="AudioTemplate", Compare= CompareType.StartsWith },
                     new StringCompareSetting() { Name="Dwarven", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Skeleton", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Draugr", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Atronach", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Corpse", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Beggar", Compare= CompareType.Contains },
