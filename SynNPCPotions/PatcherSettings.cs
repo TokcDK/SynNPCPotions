@@ -15,18 +15,34 @@ namespace SynNPCPotions
         [SynthesisTooltip("Chance to appear of item from each pack")]
         public int LLIChance = 90;
         [SynthesisOrder]
-        [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
-        public HashSet<FormLink<IItemGetter>>? Items;
+        [SynthesisTooltip("Default Health potions is here. Add the items as base if no any from custom packs was set")]
+        public HashSet<FormLink<IItemGetter>>? Items1;
+        [SynthesisOrder]
+        [SynthesisTooltip("Default Magicka potions is here. Add the items as base if no any from custom packs was set")]
+        public HashSet<FormLink<IItemGetter>>? Items2;
+        [SynthesisOrder]
+        [SynthesisTooltip("Default Stamina potions is here. Add the items as base if no any from custom packs was set")]
+        public HashSet<FormLink<IItemGetter>>? Items3;
     }
 
     public class PatcherSettings
     {
         [SynthesisOrder]
         [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
-        public BaseItemsData BaseItems = new() { Items = new()
-        {
-            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey.ToLink<IItemGetter>()
-        }};
+        public BaseItemsData BaseItems = new() { 
+            Items1 = new()
+            {
+                Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey.ToLink<IItemGetter>()
+            },
+            Items2 = new()
+            {
+                Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey.ToLink<IItemGetter>()
+            },
+            Items3 = new()
+            {
+                Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey.ToLink<IItemGetter>()
+            },
+        };
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
         public HashSet<ModKey> OriginModsToSkip = new();
