@@ -25,7 +25,7 @@ namespace SynNPCPotions
         [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
         public BaseItemsData BaseItems = new() { Items = new()
         {
-            new FormLink<IItemGetter>(Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey)
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey.ToLink<IItemGetter>()
         }};
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
