@@ -1,4 +1,5 @@
-﻿using Mutagen.Bethesda.Plugins;
+﻿using Mutagen.Bethesda;
+using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis.Settings;
 using StringCompareSettings;
@@ -13,6 +14,12 @@ namespace SynNPCPotions
         [SynthesisOrder]
         [SynthesisTooltip("Chance to appear of item from each pack")]
         public int ChanceOfEach = 90;
+        [SynthesisOrder]
+        [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
+        public HashSet<string> BaseItems = new()
+        {
+            "03A16A:Skyrim.esm"
+        };
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
         public HashSet<ModKey> OriginModsToSKip = new();
@@ -118,12 +125,16 @@ namespace SynNPCPotions
                     new StringCompareSetting() { Name="VoiceType", Compare= CompareType.StartsWith },
                     new StringCompareSetting() { Name="AudioTemplate", Compare= CompareType.StartsWith },
                     new StringCompareSetting() { Name="Dwarven", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Skeleton", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Atronach", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Corpse", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Beggar", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Victim", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Prisoner", Compare= CompareType.Contains },
                     new StringCompareSetting() { Name="Child", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="Android", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="dummy", Compare= CompareType.Contains },
+                    new StringCompareSetting() { Name="CB2_", Compare = CompareType.StartsWith },
                     new StringCompareSetting() { Name="aaaBreed", Compare= CompareType.StartsWith },
                     new StringCompareSetting() { Name="^.*Slave[^r]{0,1}.*$", Compare= CompareType.Regex, Comment="slave but not slaver"},
                 }

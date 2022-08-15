@@ -25,7 +25,6 @@ namespace SynNPCPotions
             var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey).Record;
 
             // set in main list
-            //var lVLIToAdd = SetLLI(state, lItemPotionRestoreHealth.Record.ToLink(), Settings.Value.ChanceOfEach, Settings.Value.PotionsCount);
             var item = new CustomItem()
             {
                 Items = new HashSet<FormLink<IItemGetter>>() { (FormLink<IItemGetter>)(lItemPotionRestoreHealth as IItemGetter).ToLink() },
@@ -47,6 +46,7 @@ namespace SynNPCPotions
 
                 bool isFound = false;
                 var lVLIToAddFormKey = FormKey.Null;
+
                 // search custom packs
                 foreach (var customPack in settings.CustomPacks)
                 {
@@ -82,8 +82,6 @@ namespace SynNPCPotions
                 lVLISub.EditorID = "LItemGeneratedNPCPotionsSub" + "I" + itemData.Items.First().FormKey.ToString().Remove(6, 1) + "C" + itemData.LLICount + "P" + itemData.LLIChance; // "LItemGeneratedNPCPotionsSub";
                 lVLISub.ChanceNone = (byte)(100 - itemData.LLIChance); // here chance to add, 10% if 90
                 foreach (var flagData in itemData.LLIFlags) lVLISub.Flags |= flagData.Flag;
-                //lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
-                //lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
                 lVLISub.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
                 // fix count chance
                 if (itemData.LLILevel <= 0) itemData.LLILevel = 1;
