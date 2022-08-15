@@ -51,8 +51,231 @@ namespace SynNPCPotions
                 ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey },
                 IgnoreIDentifiers = true
             },
-            Items2 = new BaseItemData() { ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey } },
-            Items3 = new BaseItemData() { ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey } },
+            Items2 = new BaseItemData() 
+            { 
+                ItemsList = new() 
+                { 
+                    Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
+                },
+                EDIDIdentifiers = new HashSet<StringCompareSettingGroup>()
+                {
+                    new StringCompareSettingGroup()
+                    {
+                         StringsList=new List<StringCompareSetting>()
+                         {
+                              new StringCompareSetting()
+                              {
+                                   Name = "Magic",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Mage",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Caster",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Vigilant",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Vampire",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Necromancer",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Necromancer",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Priest",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Warlock",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Boss",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                         }
+                    }
+                },
+                ClassIdentifiers= new HashSet<FormLink<IClassGetter>>()
+                {
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.Bard,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatMageConjurer,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatMageDestruction,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatMageElemental,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatMageNecro,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatMystic,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatSorcerer,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatSpellsword,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatWitchblade,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAlikrWizard,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassBanditWizard,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassForswornShaman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassThalmorWizard,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassWerewolfMage,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerAlchemyExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerAlchemyJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerAlchemyMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerAlterationExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerAlterationMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerConjurationExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerConjurationJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerConjurationMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerDestructionExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerDestructionJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerDestructionMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerEnchantingExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerEnchantingMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerIllusionExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerIllusionMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerRestorationExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerRestorationJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerRestorationMaster,
+                }
+            },
+            Items3 = new BaseItemData() 
+            { 
+                ItemsList = new() 
+                { 
+                    Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey
+                },
+                EDIDIdentifiers = new HashSet<StringCompareSettingGroup>()
+                {
+                    new StringCompareSettingGroup()
+                    {
+                         StringsList=new List<StringCompareSetting>()
+                         {
+                              new StringCompareSetting()
+                              {
+                                   Name = "Missile",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Ranged",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Ranger",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Warrior",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Melee",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Warrior",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Vigilant",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
+                                   Name = "Boss",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                         }
+                    }
+                },
+
+                ClassIdentifiers = new HashSet<FormLink<IClassGetter>>()
+                {
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.Blade,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatAssassin,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatBarbarian,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatMonk,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatNightblade,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatNightingale,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatRanger,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatRogue,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatScout,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatSpellsword,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatThief,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatWarrior1H,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatWarrior2H,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CombatWitchblade,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.CWSoldierClass,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAlikrMelee,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAlikrMissile,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassForsworn,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassForswornMissile,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassThalmorMelee,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassThalmorMissile,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassWerewolf,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassWerewolfBoss,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.GuardImperial,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.GuardOrc1H,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.GuardOrc2H,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.GuardSonsSkyrim,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.Jailor,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.SoldierImperialNotGuard,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.SoldierSonsSkyrimNotGuard,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerBlockExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerBlockMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerHeavyArmorExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerHeavyArmorMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerLightArmorExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerLightArmorJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerLightArmorMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerMarksmanExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerMarksmanJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerMarksmanMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerOneHandedExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerOneHandedJourneyman,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerOneHandedMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerTwoHandedExpert,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.TrainerTwoHandedMaster,
+                     Mutagen.Bethesda.FormKeys.SkyrimLE.Dragonborn.Class.DLC2EbonyWarriorClass,
+                }
+            },
         };
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
