@@ -62,10 +62,7 @@ namespace SynNPCPotions
                 // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
                 if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
-                var entrie = new ContainerEntry
-                {
-                    Item = new ContainerItem()
-                };
+                var entrie = new ContainerEntry { Item = new ContainerItem() };
                 entrie.Item.Item.FormKey = lVLIToAddFormKey;
                 entrie.Item.Count = 1;
                 npcEdit.Items.Add(entrie);
@@ -142,52 +139,6 @@ namespace SynNPCPotions
 
             return lVLIToAdd.FormKey;
         }
-
-        //private static LeveledItem SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IFormLink<IItemGetter> itemForAdd, int chanceOfEach, int potionsCount)
-        //{
-        //    // create leveled itema list
-        //    var lVLIHealthPotions = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
-        //    lVLIHealthPotions.EditorID = "LItemGeneratedNPCPotionsSub";
-        //    lVLIHealthPotions.ChanceNone = (byte)(100 - chanceOfEach); // here chance to add, 10% if 90
-        //    lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // also calculate each sublist
-        //    lVLIHealthPotions.Flags |= LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer; // when list is set with settings to be added only from some level
-        //    lVLIHealthPotions.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
-
-        //    // here add specific pack of leveled entries inside, maybe set in settings
-        //    // entries can be many, from some lists from patcher settings
-        //    var LVLIEntrieHealth = new LeveledItemEntry
-        //    {
-        //        Data = new LeveledItemEntryData
-        //        {
-        //            Level = 1,
-        //            Count = 1,
-        //            Reference = itemForAdd
-        //        }
-        //    };
-        //    lVLIHealthPotions.Entries.Add(LVLIEntrieHealth);
-
-        //    var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
-        //    lVLIToAdd.EditorID = "LItemGeneratedNPCPotions";
-        //    lVLIToAdd.ChanceNone = 0; // 100%
-        //    lVLIToAdd.Flags |= LeveledItem.Flag.UseAll; // all record will be calculated
-        //    lVLIToAdd.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
-
-        //    var LVLIEntrie = new LeveledItemEntry
-        //    {
-        //        Data = new LeveledItemEntryData
-        //        {
-        //            Level = 1,
-        //            Count = 1,
-        //            Reference = lVLIHealthPotions.ToLink() // set sublist with potions
-        //        }
-        //    };
-        //    for (int i = 0; i < potionsCount; i++) // here we use count of added items
-        //    {
-        //        lVLIToAdd.Entries.Add(LVLIEntrie);
-        //    }
-
-        //    return lVLIToAdd;
-        //}
 
         static bool isCheckPlayer = true;
         static FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
