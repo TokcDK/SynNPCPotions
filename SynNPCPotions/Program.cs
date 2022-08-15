@@ -28,9 +28,8 @@ namespace SynNPCPotions
             var item = new CustomItem()
             {
                 Items = new HashSet<FormLink<IItemGetter>>() { (FormLink<IItemGetter>)(lItemPotionRestoreHealth as IItemGetter).ToLink() },
-                LLICount = 1,
+                LLICount = 5,
                 LLIChance = 10,
-                InstancesCount = 5,
             };
             List<CustomItem> items = new() { item };
 
@@ -104,12 +103,7 @@ namespace SynNPCPotions
                     };
                     lVLISub.Entries.Add(LVLIEntrie);
                 }
-
-                // add instances
-                for (int i = 0; i < itemData.InstancesCount; i++)
-                {
-                    itemLLists.Add(lVLISub.ToLink());
-                }
+                itemLLists.Add(lVLISub.ToLink());
             }
 
 

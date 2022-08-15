@@ -6,20 +6,27 @@ using StringCompareSettings;
 
 namespace SynNPCPotions
 {
-    public class PatcherSettings
+    public class BaseItemsData
     {
         [SynthesisOrder]
         [SynthesisTooltip("Count of possible item packs")]
-        public int PotionsCount = 5;
+        public int LLICount = 5;
         [SynthesisOrder]
         [SynthesisTooltip("Chance to appear of item from each pack")]
-        public int ChanceOfEach = 90;
+        public int LLIChance = 90;
         [SynthesisOrder]
         [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
-        public HashSet<string> BaseItems = new()
+        public HashSet<FormLink<IItemGetter>>? Items;
+    }
+
+    public class PatcherSettings
+    {
+        [SynthesisOrder]
+        [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
+        public BaseItemsData BaseItems = new() { Items = new()
         {
-            "03A16A:Skyrim.esm"
-        };
+            new FormLink<IItemGetter>(Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey)
+        }};
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
         public HashSet<ModKey> OriginModsToSKip = new();
@@ -83,19 +90,20 @@ namespace SynNPCPotions
     public class CustomItem
     {
         [SynthesisOrder]
-        [SynthesisTooltip("Instances count of item record")]
-        public int InstancesCount = 1;
-        [SynthesisOrder]
-        [SynthesisTooltip("Count of item record")]
+        [SynthesisTooltip($"Count of item record.\nWhen set {nameof(LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer)} flag, item will appear only when value is lesser of player's current level.")]
         public int LLILevel = 1;
         [SynthesisOrder]
-        [SynthesisTooltip("Count of item record")]
+        [SynthesisTooltip($"Count of item record.\nWhen set {nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag, it will set copies count with standalone chance for each.")]
         public int LLICount = 1;
         [SynthesisOrder]
-        [SynthesisTooltip("Appear chance of item")]
+        [SynthesisTooltip($"Appear chance of item.\nWhen set {nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag, chance will be calculated {nameof(LLICount)} times like it different items")]
         public int LLIChance = 10;
         [SynthesisOrder]
-        [SynthesisTooltip("Item leveled list flags")]
+        [SynthesisTooltip($"Item leveled list flags. "
+            + $"\n\n{nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag will make calculate appear chance {nameof(LLICount)} times like like it {nameof(LLICount)} copies of item."
+            + $"\n{nameof(LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer)} flag will make possible to appear the item only when level of player is same or greater of npc for which item was added."
+            + $"\n{nameof(LeveledItem.Flag.UseAll)} flag will make a chance for all items in list to appear at once."
+            )]
         public HashSet<ItemLLIFlag> LLIFlags = new()
         {
             new ItemLLIFlag() { Flag = LeveledItem.Flag.CalculateForEachItemInCount },
