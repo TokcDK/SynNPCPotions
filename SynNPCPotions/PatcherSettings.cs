@@ -72,6 +72,9 @@ namespace SynNPCPotions
             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.AtronachFlameFaction,
             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.AtronachFrostFaction,
             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.AtronachStormFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.SprigganPredatorFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.SprigganPreyFaction,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.HunterPreyFaction,
         };
         [SynthesisOrder]
         [SynthesisTooltip("Configuration flags list to skip npcs with attached any of them")]
