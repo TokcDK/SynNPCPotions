@@ -77,6 +77,12 @@ namespace SynNPCPotions
                               },
                               new StringCompareSetting()
                               {
+                                   Name = "Spell",
+                                   Compare= CompareType.Contains,
+                                   IgnoreCase = true,
+                              },
+                              new StringCompareSetting()
+                              {
                                    Name = "Caster",
                                    Compare= CompareType.Contains,
                                    IgnoreCase = true,
