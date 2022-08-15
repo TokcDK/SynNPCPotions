@@ -29,7 +29,7 @@ namespace SynNPCPotions
         }};
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
-        public HashSet<ModKey> OriginModsToSKip = new();
+        public HashSet<ModKey> OriginModsToSkip = new();
         [SynthesisOrder]
         [SynthesisTooltip("If will found any npc keyword from here, will skip npc")]
         public HashSet<FormLink<IKeywordGetter>> NpcKeywordsToSkip = new()

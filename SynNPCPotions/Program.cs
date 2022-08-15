@@ -139,7 +139,7 @@ namespace SynNPCPotions
             if (npcGetter == null) return false;
             if (npcGetter.IsDeleted) return false;
             if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; return false; } // ignore player
-            if (settings.OriginModsToSKip.Contains(npcGetter.FormKey.ModKey)) return false; // ignore npc by origin mod
+            if (settings.OriginModsToSkip.Contains(npcGetter.FormKey.ModKey)) return false; // ignore npc by origin mod
             if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) return false; // ignore by configuration flags list                
             if (npcGetter.EditorID != null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
             if (settings.EDIDsToSkip.CheckNpcName && npcGetter.Name != null && npcGetter.Name.String.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
