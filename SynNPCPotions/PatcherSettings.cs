@@ -9,20 +9,36 @@ namespace SynNPCPotions
     public class BaseItemsData
     {
         [SynthesisOrder]
+        [SynthesisTooltip("Default Health potions is here. Add the items as base if no any from custom packs was set")]
+        public BaseItemData? Items1;
+        [SynthesisOrder]
+        [SynthesisTooltip("Default Magicka potions is here. Add the items as base if no any from custom packs was set")]
+        public BaseItemData? Items2;
+        [SynthesisOrder]
+        [SynthesisTooltip("Default Stamina potions is here. Add the items as base if no any from custom packs was set")]
+        public BaseItemData? Items3;
+    }
+
+    public class BaseItemData
+    {
+        [SynthesisOrder]
+        [SynthesisTooltip("Ignore Identifiers and add to all npcs which was not ignored by ignore lists")]
+        public bool IgnoreIDentifiers = false;
+        [SynthesisOrder]
         [SynthesisTooltip("Count of possible item packs")]
         public int LLICount = 5;
         [SynthesisOrder]
         [SynthesisTooltip("Chance to appear of item from each pack")]
         public int LLIChance = 90;
         [SynthesisOrder]
-        [SynthesisTooltip("Default Health potions is here. Add the items as base if no any from custom packs was set")]
-        public HashSet<FormLink<IItemGetter>>? Items1;
+        [SynthesisTooltip("Default Health potions is here. Add the items as base if no any from custom packs was set.")]
+        public HashSet<FormLink<IItemGetter>>? ItemsList;
         [SynthesisOrder]
-        [SynthesisTooltip("Default Magicka potions is here. Add the items as base if no any from custom packs was set")]
-        public HashSet<FormLink<IItemGetter>>? Items2;
+        [SynthesisTooltip($"Edintifiers to add items from {nameof(ItemsList)} by NPC Editor ID")]
+        public HashSet<StringCompareSettingGroup>? EDIDIdentifiers;
         [SynthesisOrder]
-        [SynthesisTooltip("Default Stamina potions is here. Add the items as base if no any from custom packs was set")]
-        public HashSet<FormLink<IItemGetter>>? Items3;
+        [SynthesisTooltip($"Edintifiers to add items from {nameof(ItemsList)} by NPC Class")]
+        public HashSet<FormLink<IClassGetter>>? ClassIdentifiers;
     }
 
     public class PatcherSettings
@@ -30,18 +46,13 @@ namespace SynNPCPotions
         [SynthesisOrder]
         [SynthesisTooltip("Add the items as base if no any from custom packs was set")]
         public BaseItemsData BaseItems = new() { 
-            Items1 = new()
+            Items1 = new BaseItemData()
             {
-                Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey.ToLink<IItemGetter>()
+                ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey },
+                IgnoreIDentifiers = true
             },
-            Items2 = new()
-            {
-                Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey.ToLink<IItemGetter>()
-            },
-            Items3 = new()
-            {
-                Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey.ToLink<IItemGetter>()
-            },
+            Items2 = new BaseItemData() { ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey } },
+            Items3 = new BaseItemData() { ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey } },
         };
         [SynthesisOrder]
         [SynthesisTooltip("List of mods to skip if npc from any of them")]
