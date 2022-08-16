@@ -146,7 +146,7 @@ namespace SynNPCPotions
             bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
             if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) return false;
             if (settings.NpcClassesToSkip.Contains(npcGetter.Class)) return false;
-            if (npcGetter.CombatStyle != null && settings.NpcCombatStylesToSkip.Contains(npcGetter.CombatStyle.FormKey)) return false;
+            if (settings.NpcCombatStylesToSkip.Contains(npcGetter.CombatStyle.FormKey)) return false;
             // skip by factions. slow!
             //var facNpc = npcGetter;
             //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
