@@ -317,6 +317,37 @@ namespace SynNPCPotions
             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Faction.HunterPreyFaction,
         };
         [SynthesisOrder]
+        [SynthesisTooltip("If will found any npc class from here, will skip npc")]
+        public HashSet<FormLink<IClassGetter>> NpcClassesToSkip = new()
+        {
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.Beggar,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.Child,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAnimalPredator,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAnimalPrey,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAtronachFlame,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAtronachFrost,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassAtronachStorm,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassBear,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassChaurus,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDraugrMagic,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDraugrMelee,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDraugrMissile,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDremoraMelee,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDwarvenCenturion,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDwarvenSphere,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassDwarvenSpider,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassFalmer,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassFalmerShaman,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassFrostbiteSpider,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassGiant,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassHorker,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassHorse,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassIceWraith,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassMammoth,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.EncClassMudCrab,
+            Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.Class.Prisoner,
+        };
+        [SynthesisOrder]
         [SynthesisTooltip("Configuration flags list to skip npcs with attached any of them")]
         public HashSet<NpcConfigurationFlag> FlagsToSkip = new()
         {

@@ -145,14 +145,7 @@ namespace SynNPCPotions
             if (settings.EDIDsToSkip.CheckNpcName && npcGetter.Name != null && npcGetter.Name.String.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
             bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
             if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Inventory)) return false;
-            // skip by keywords. slow!
-            //var kwNpc = npcGetter;
-            //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
-            //{
-            //    kwNpc = untemplatedKeywords;
-            //}
-            //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
-            if (npcGetter.Keywords != null && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) return false;
+            if (settings.NpcClassesToSkip.Contains(npcGetter.Class)) return false;
             // skip by factions. slow!
             //var facNpc = npcGetter;
             //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Factions) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Factions, out var untemplatedFactions))
@@ -161,6 +154,14 @@ namespace SynNPCPotions
             //}
             //if (facNpc.Factions != null && facNpc.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
             if (npcGetter.Factions != null && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) return false;
+            // skip by keywords. slow!
+            //var kwNpc = npcGetter;
+            //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
+            //{
+            //    kwNpc = untemplatedKeywords;
+            //}
+            //if (kwNpc.Keywords != null && kwNpc.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) continue;
+            if (npcGetter.Keywords != null && npcGetter.Keywords.Any(k => settings.NpcKeywordsToSkip.Contains(k))) return false;
 
             return true;
         }
