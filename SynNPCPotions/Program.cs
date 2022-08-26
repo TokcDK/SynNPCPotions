@@ -132,15 +132,14 @@ namespace SynNPCPotions
             return lVLIToAdd.FormKey;
         }
 
-        static bool isCheckPlayer = true;
-        static FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
+        private static bool isCheckPlayer = true;
+        static readonly FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
         private static bool IsValidNpc(INpcGetter npcGetter, IPatcherState<ISkyrimMod, ISkyrimModGetter> state, PatcherSettings settings)
         {
-            if (npcGetter == null) return false;
             if (npcGetter.IsDeleted) return false;
             if (isCheckPlayer && npcGetter.FormKey == playerFormKey) { isCheckPlayer = false; return false; } // ignore player
             if (settings.OriginModsToSkip.Contains(npcGetter.FormKey.ModKey)) return false; // ignore npc by origin mod
-            if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) return false; // ignore by configuration flags list                
+            if (settings.FlagsToSkip.Any(flag => npcGetter.Configuration.Flags.HasFlag(flag.Flag))) return false; // ignore by configuration flags list
             if (npcGetter.EditorID != null && npcGetter.EditorID.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
             if (settings.EDIDsToSkip.CheckNpcName && npcGetter.Name != null && npcGetter.Name.String.HasAnyFromList(settings.EDIDsToSkip.SkipList)) return false; // ignore by editor id ignore list
             bool isTemplated = npcGetter.Template != null && !npcGetter.Template.IsNull;
