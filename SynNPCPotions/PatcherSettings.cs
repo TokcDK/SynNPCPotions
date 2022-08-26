@@ -413,6 +413,9 @@ namespace SynNPCPotions
         [SynthesisSettingName("EDIDsToSkip")]
         public EDIDSkipSettings EDIDsToSkip = new();
         [SynthesisOrder]
+        [SynthesisTooltip("Will remove Asis 'NPCPotions' script if it is exist in any npc\nThe patcher have no sense when the script added")]
+        public bool RemoveNPCPotionsScript = true;
+        [SynthesisOrder]
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
         public HashSet<CustomPack> CustomPacks = new();
     }

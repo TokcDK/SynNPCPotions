@@ -38,7 +38,13 @@ namespace SynNPCPotions
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
-                // skip invalid
+
+                // skip invalid                
+                if (npcGetter.VirtualMachineAdapter != null && npcGetter.VirtualMachineAdapter.Scripts.Any(s => s.Name == "NPCPotions"))
+                {
+                    var npcRemoveNPCPotionsScript = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
+                    npcRemoveNPCPotionsScript.VirtualMachineAdapter!.Scripts.Remove(npcRemoveNPCPotionsScript.VirtualMachineAdapter.Scripts.First(s => s.Name == "NPCPotions"));
+                }
                 if (!IsValidNpc(npcGetter, state, settings)) continue;
 
                 patchedNpcCount++;
