@@ -154,7 +154,7 @@ namespace SynNPCPotions
             //    facNpc = untemplatedFactions;
             //}
             //if (facNpc.Factions != null && facNpc.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) continue;
-            if (npcGetter.Factions != null && npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) return false;
+            if (npcGetter.Factions.Any(f => settings.NpcFactionsToSkip.Contains(f.Faction))) return false;
             // skip by keywords. slow!
             //var kwNpc = npcGetter;
             //if (isTemplated && npcGetter.Configuration.TemplateFlags.HasFlag(NpcConfiguration.TemplateFlag.Keywords) && npcGetter.TryUnTemplate(state.LinkCache, NpcConfiguration.TemplateFlag.Keywords, out var untemplatedKeywords))
