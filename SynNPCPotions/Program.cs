@@ -39,11 +39,12 @@ namespace SynNPCPotions
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
 
-                // skip invalid                
-                if (npcGetter.VirtualMachineAdapter != null && npcGetter.VirtualMachineAdapter.Scripts.Any(s => s.Name == "NPCPotions"))
+                // skip invalid
+                ScriptEntry? npcPotionsEntry;
+                if (npcGetter.VirtualMachineAdapter != null && (npcPotionsEntry = (ScriptEntry?)npcGetter.VirtualMachineAdapter.Scripts.FirstOrDefault(s => s != null && s.Name == "NPCPotions", null)) != null)
                 {
                     var npcRemoveNPCPotionsScript = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
-                    npcRemoveNPCPotionsScript.VirtualMachineAdapter!.Scripts.Remove(npcRemoveNPCPotionsScript.VirtualMachineAdapter.Scripts.First(s => s.Name == "NPCPotions"));
+                    npcRemoveNPCPotionsScript.VirtualMachineAdapter!.Scripts.Remove(npcPotionsEntry);
                 }
                 if (!IsValidNpc(npcGetter, state, settings)) continue;
 
