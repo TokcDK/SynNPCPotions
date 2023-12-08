@@ -70,7 +70,7 @@ namespace SynNPCPotions
 
             foreach(var items in itemsToAdd)
             {
-                var litemEdId = !string.IsNullOrWhiteSpace(items.EDID) ? items.EDID : GetLLIEdIdAuto(items) ;
+                var litemEdId = !string.IsNullOrWhiteSpace(items.EDID) ? items.EDID : GetLLIEdIdAuto(npcGetter, items) ;
                 
                 var lList = state.PatchMod.LeveledItems.AddNew(litemEdId);
                 lList.Flags = items.LLIFlags;
@@ -99,9 +99,9 @@ namespace SynNPCPotions
             }
         }
 
-        private static string GetLLIEdIdAuto(LeveledItemDataToAdd items)
+        private static string GetLLIEdIdAuto(INpcGetter npcGetter, LeveledItemDataToAdd items)
         {
-            throw new NotImplementedException();
+            return $"LItem{npcGetter.EditorID}NPCPotionsL{items.LLILevel}C{items.Items.Count}";
         }
 
         //private static FormKey TryGetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
