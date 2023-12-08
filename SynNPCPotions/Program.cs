@@ -39,12 +39,8 @@ namespace SynNPCPotions
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
                 // skip invalid
-                ScriptEntry? npcPotionsEntry;
-                if (npcGetter.VirtualMachineAdapter != null && (npcPotionsEntry = (ScriptEntry?)npcGetter.VirtualMachineAdapter.Scripts.FirstOrDefault(s => s != null && s.Name == "NPCPotions", null)) != null)
-                {
-                    var npcRemoveNPCPotionsScript = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
-                    npcRemoveNPCPotionsScript.VirtualMachineAdapter!.Scripts.Remove(npcPotionsEntry);
-                }
+                CheckRemoveNPCPotionsScript(state, npcGetter);
+
                 if (!IsValidNpc(npcGetter, state, settings)) continue;
 
                 patchedNpcCount++;
@@ -74,6 +70,16 @@ namespace SynNPCPotions
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+        }
+
+        private static void CheckRemoveNPCPotionsScript(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, INpcGetter npcGetter)
+        {
+            ScriptEntry? npcPotionsEntry;
+            if (npcGetter.VirtualMachineAdapter != null && (npcPotionsEntry = (ScriptEntry?)npcGetter.VirtualMachineAdapter.Scripts.FirstOrDefault(s => s != null && s.Name == "NPCPotions", null)) != null)
+            {
+                var npcRemoveNPCPotionsScript = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
+                npcRemoveNPCPotionsScript.VirtualMachineAdapter!.Scripts.Remove(npcPotionsEntry);
+            }
         }
 
         private static FormKey SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IEnumerable<CustomItem> itemsData)
