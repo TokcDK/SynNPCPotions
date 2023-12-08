@@ -38,7 +38,6 @@ namespace SynNPCPotions
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
-
                 // skip invalid
                 ScriptEntry? npcPotionsEntry;
                 if (npcGetter.VirtualMachineAdapter != null && (npcPotionsEntry = (ScriptEntry?)npcGetter.VirtualMachineAdapter.Scripts.FirstOrDefault(s => s != null && s.Name == "NPCPotions", null)) != null)

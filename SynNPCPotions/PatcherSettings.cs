@@ -23,7 +23,7 @@ namespace SynNPCPotions
     {
         [SynthesisOrder]
         [SynthesisTooltip("Ignore Identifiers and add to all npcs which was not ignored by ignore lists")]
-        public bool IgnoreIDentifiers = false;
+        public bool IgnoreIdentifiers = false;
         [SynthesisOrder]
         [SynthesisTooltip("Count of possible item packs")]
         public int LLICount = 5;
@@ -49,7 +49,7 @@ namespace SynNPCPotions
             Items1 = new BaseItemData()
             {
                 ItemsList = new() { Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey },
-                IgnoreIDentifiers = true
+                IgnoreIdentifiers = true
             },
             Items2 = new BaseItemData() 
             { 
