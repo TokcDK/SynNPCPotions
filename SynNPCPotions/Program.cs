@@ -36,8 +36,6 @@ namespace SynNPCPotions
 
                 if (!IsValidNpc(npcGetter, state, settings)) continue;
 
-                patchedNpcCount++;
-
                 var npcEdId = npcGetter.EditorID;
                 var npcClass = npcGetter.Class == null || npcGetter.Class.IsNull || npcGetter.Class.FormKeyNullable == null ? null :  state.LinkCache.Resolve<IClassGetter>(npcGetter.Class.FormKey);
                 if (npcClass == null) continue;
@@ -58,6 +56,8 @@ namespace SynNPCPotions
 
                 // add potions list
                 AddPotions(npcGetter, itemsToAdd, state);
+
+                patchedNpcCount++;
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
