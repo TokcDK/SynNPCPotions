@@ -45,18 +45,24 @@ namespace SynNPCPotions
 
                 patchedNpcCount++;
 
-                FormKey lVLIToAddFormKey = TryGetLLI(settings.CustomPacks, npcGetter, baselVLIToAddFormKey, state);
-                
                 // add potions list
-                var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
-                if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
-                var entrie = new ContainerEntry { Item = new ContainerItem() };
-                entrie.Item.Item.FormKey = lVLIToAddFormKey;
-                entrie.Item.Count = 1;
-                npcEdit.Items.Add(entrie);
+                FormKey lVLIToAddFormKey = TryGetLLI(settings.CustomPacks, npcGetter, baselVLIToAddFormKey, state);
+                AddPotions(npcGetter, lVLIToAddFormKey, state);
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+        }
+
+        private static void AddPotions(INpcGetter npcGetter, FormKey lVLIToAddFormKey, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        {
+            var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
+            npcEdit.Items ??= new Noggog.ExtendedList<ContainerEntry>();
+
+            var entrie = new ContainerEntry { Item = new ContainerItem() };
+            entrie.Item.Item.FormKey = lVLIToAddFormKey;
+            entrie.Item.Count = 1;
+
+            npcEdit.Items.Add(entrie);
         }
 
         private static FormKey TryGetLLI(HashSet<CustomPack> customPacks, INpcGetter npcGetter, FormKey baselVLIToAddFormKey, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
