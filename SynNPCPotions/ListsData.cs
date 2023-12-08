@@ -252,9 +252,9 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<CustomItem>()
+                ItemsToAdd = new HashSet<LeveledItemDataToAdd>()
                 {
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -264,7 +264,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -274,7 +274,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -284,7 +284,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 20,
                         LLICount= 1,
@@ -294,7 +294,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 30,
                         LLICount= 1,
@@ -304,7 +304,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 40,
                         LLICount= 1,
@@ -314,7 +314,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 10,
                         LLICount= 1,
@@ -324,7 +324,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -334,7 +334,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 20,
                         LLICount= 1,
@@ -344,7 +344,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 40,
                         LLICount= 2,
@@ -655,9 +655,9 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<CustomItem>()
+                ItemsToAdd = new HashSet<LeveledItemDataToAdd>()
                 {
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -667,7 +667,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -677,7 +677,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -687,7 +687,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagickaBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 20,
                         LLICount= 1,
@@ -697,7 +697,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagickaBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 40,
                         LLICount= 1,
@@ -707,7 +707,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagickaBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -717,7 +717,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 20,
                         LLICount= 1,
@@ -727,7 +727,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -906,9 +906,9 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<CustomItem>()
+                ItemsToAdd = new HashSet<LeveledItemDataToAdd>()
                 {
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -918,7 +918,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -928,7 +928,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -938,7 +938,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 20,
                         LLICount= 1,
@@ -948,7 +948,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 40,
                         LLICount= 1,
@@ -958,7 +958,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,
@@ -968,7 +968,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 20,
                         LLICount= 1,
@@ -978,7 +978,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 40,
                         LLICount= 1,
@@ -988,7 +988,7 @@ namespace SynNPCPotions
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new CustomItem()
+                    new LeveledItemDataToAdd()
                     {
                         LLILevel= 1,
                         LLICount= 1,

@@ -196,11 +196,14 @@ namespace SynNPCPotions
         public HashSet<StringCompareSettingGroup> NpcClassEdIdExclude = new();
         [SynthesisOrder]
         [SynthesisTooltip("Items list to add")]
-        public HashSet<CustomItem> ItemsToAdd = new();
+        public HashSet<LeveledItemDataToAdd> ItemsToAdd = new();
     }
 
-    public class CustomItem
+    public class LeveledItemDataToAdd
     {
+        [SynthesisOrder]
+        [SynthesisTooltip($"LeveledItem editor id")]
+        public string EDID { get; set; } = "";
         [SynthesisOrder]
         [SynthesisTooltip($"Count of item record.\nWhen set {nameof(LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer)} flag, item will appear only when value is lesser of player's current level.")]
         public int LLILevel = 1;
@@ -216,11 +219,7 @@ namespace SynNPCPotions
             + $"\n{nameof(LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer)} flag will make possible to appear the item only when level of player is same or greater of npc for which item was added."
             + $"\n{nameof(LeveledItem.Flag.UseAll)} flag will make a chance for all items in list to appear at once."
             )]
-        public HashSet<ItemLLIFlag> LLIFlags = new()
-        {
-            new ItemLLIFlag() { Flag = LeveledItem.Flag.CalculateForEachItemInCount },
-            new ItemLLIFlag() { Flag = LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer },
-        };
+        public LeveledItem.Flag LLIFlags = LeveledItem.Flag.CalculateForEachItemInCount | LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer | LeveledItem.Flag.UseAll;
         [SynthesisOrder]
         [SynthesisTooltip("Items to add in the list")]
         public HashSet<FormLink<IItemGetter>> Items = new();

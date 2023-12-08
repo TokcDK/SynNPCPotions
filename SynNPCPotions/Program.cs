@@ -1,3 +1,4 @@
+using DynamicData;
 using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
@@ -42,7 +43,7 @@ namespace SynNPCPotions
                 if (npcClass == null) continue;
 
                 var npcClassEdId = npcClass.EditorID;
-                var itemsToAdd = new List<CustomItem>();
+                var itemsToAdd = new List<LeveledItemDataToAdd>();
                 foreach (var data in settings.CustomPacks)
                 {
                     if (npcEdId.HasAnyFromList(data.NpcEdIdExclude)) continue;
@@ -62,39 +63,58 @@ namespace SynNPCPotions
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
         }
 
-        private static void AddPotions(INpcGetter npcGetter, List<CustomItem> itemsToAdd, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        private static void AddPotions(INpcGetter npcGetter, List<LeveledItemDataToAdd> itemsToAdd, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
             npcEdit.Items ??= new Noggog.ExtendedList<ContainerEntry>();
 
             foreach(var items in itemsToAdd)
             {
-                var lList = state.PatchMod.LeveledItems.GetOrAddAsOverride();
+                var litemEdId = !string.IsNullOrWhiteSpace(items.EDID) ? items.EDID : GetLLIEdIdAuto(items) ;
+                
+                var lList = state.PatchMod.LeveledItems.AddNew(litemEdId);
+                lList.Flags = items.LLIFlags;
+                lList.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
 
-                var level = items.LLILevel;
-                var flags = items.LLIFlags;
                 foreach (var item in items.Items)
                 {
-                    var entrie = new ContainerEntry { Item = new ContainerItem() };
-                    entrie.Item.Item.FormKey = item.Items;
-                    entrie.Item.Count = 1;
+                    var lItemEntry = new LeveledItemEntry()
+                    {
+                        Data = new LeveledItemEntryData()
+                        {
+                            Level = (short)items.LLILevel,
+                            Count = (short)items.LLICount,
+                            Reference = item
+                        }
+                    };
+
+                    lList.Entries.Add(lItemEntry);
                 }
-            }
 
-            npcEdit.Items.Add(entrie);
+                var npcItem = new ContainerEntry { Item = new ContainerItem() };
+                npcItem.Item.Item.FormKey = lList.FormKey;
+                npcItem.Item.Count = 1;
+
+                npcEdit.Items.Add(npcItem);
+            }
         }
 
-        private static FormKey TryGetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        private static string GetLLIEdIdAuto(LeveledItemDataToAdd items)
         {
-            // search custom packs
-            foreach (var customPack in customPacks)
-            {
-                if (!npcGetter.EditorID.HasAnyFromList(customPack.NpcEdIdInclude)) continue;
-
-                return SetLLI(state, customPack.ItemsToAdd);
-            }
-            return FormKey.Null;
+            throw new NotImplementedException();
         }
+
+        //private static FormKey TryGetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        //{
+        //    // search custom packs
+        //    foreach (var customPack in customPacks)
+        //    {
+        //        if (!npcGetter.EditorID.HasAnyFromList(customPack.NpcEdIdInclude)) continue;
+
+        //        return SetLLI(state, customPack.ItemsToAdd);
+        //    }
+        //    return FormKey.Null;
+        //}
 
         private static void CheckRemoveNPCPotionsScript(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, INpcGetter npcGetter)
         {
@@ -106,67 +126,67 @@ namespace SynNPCPotions
             }
         }
 
-        private static FormKey SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IEnumerable<CustomItem> itemsData)
-        {
-            var itemLLists = new List<IFormLink<IItemGetter>>();
+        //private static FormKey SetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, IEnumerable<LeveledItemDataToAdd> itemsData)
+        //{
+        //    var itemLLists = new List<IFormLink<IItemGetter>>();
 
-            foreach (var itemData in itemsData)
-            {
-                // create leveled itema list
-                var lVLISub = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
-                lVLISub.EditorID = "LItemGeneratedNPCPotionsSub" + "I" + itemData.Items.First().FormKey.ToString().Remove(6, 1) + "C" + itemData.LLICount + "P" + itemData.LLIChance; // "LItemGeneratedNPCPotionsSub";
-                lVLISub.ChanceNone = (byte)(100 - itemData.LLIChance); // here chance to add, 10% if 90
-                foreach (var flagData in itemData.LLIFlags) lVLISub.Flags |= flagData.Flag;
-                lVLISub.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
-                // fix count chance
-                if (itemData.LLILevel <= 0) itemData.LLILevel = 1;
-                if (itemData.LLICount <= 0) itemData.LLICount = 1;
+        //    foreach (var itemData in itemsData)
+        //    {
+        //        // create leveled itema list
+        //        var lVLISub = state.PatchMod.LeveledItems.AddNew(); // Sublist including item records which will be added with selected chance
+        //        lVLISub.EditorID = "LItemGeneratedNPCPotionsSub" + "I" + itemData.Items.First().FormKey.ToString().Remove(6, 1) + "C" + itemData.LLICount + "P" + itemData.LLIChance; // "LItemGeneratedNPCPotionsSub";
+        //        lVLISub.ChanceNone = (byte)(100 - itemData.LLIChance); // here chance to add, 10% if 90
+        //        foreach (var flagData in itemData.LLIFlags) lVLISub.Flags |= flagData.Flag;
+        //        lVLISub.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+        //        // fix count chance
+        //        if (itemData.LLILevel <= 0) itemData.LLILevel = 1;
+        //        if (itemData.LLICount <= 0) itemData.LLICount = 1;
 
-                // here add specific pack of leveled entries inside, maybe set in settings
-                // entries can be many, from some lists from patcher settings
-                short level = (short)itemData.LLILevel;
-                short count = (short)itemData.LLICount;
-                foreach (var item in itemData.Items)
-                {
-                    var LVLIEntrie = new LeveledItemEntry
-                    {
-                        Data = new LeveledItemEntryData
-                        {
-                            Level = level,
-                            Count = count,
-                            Reference = item
-                        }
-                    };
-                    lVLISub.Entries.Add(LVLIEntrie);
-                }
-                itemLLists.Add(lVLISub.ToLink());
-            }
+        //        // here add specific pack of leveled entries inside, maybe set in settings
+        //        // entries can be many, from some lists from patcher settings
+        //        short level = (short)itemData.LLILevel;
+        //        short count = (short)itemData.LLICount;
+        //        foreach (var item in itemData.Items)
+        //        {
+        //            var LVLIEntrie = new LeveledItemEntry
+        //            {
+        //                Data = new LeveledItemEntryData
+        //                {
+        //                    Level = level,
+        //                    Count = count,
+        //                    Reference = item
+        //                }
+        //            };
+        //            lVLISub.Entries.Add(LVLIEntrie);
+        //        }
+        //        itemLLists.Add(lVLISub.ToLink());
+        //    }
 
 
-            var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
-            lVLIToAdd.EditorID = "LItemGeneratedNPCPotions";
-            lVLIToAdd.ChanceNone = 0; // 100%
-            lVLIToAdd.Flags |= LeveledItem.Flag.UseAll; // all record will be calculated
-            lVLIToAdd.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // all record will be calculated
-            lVLIToAdd.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+        //    var lVLIToAdd = state.PatchMod.LeveledItems.AddNew(); // main leveled items list, which will be added to valid npcs
+        //    lVLIToAdd.EditorID = "LItemGeneratedNPCPotions";
+        //    lVLIToAdd.ChanceNone = 0; // 100%
+        //    lVLIToAdd.Flags |= LeveledItem.Flag.UseAll; // all record will be calculated
+        //    lVLIToAdd.Flags |= LeveledItem.Flag.CalculateForEachItemInCount; // all record will be calculated
+        //    lVLIToAdd.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
 
-            foreach (var lliLink in itemLLists)
-            {
-                var lVLIToAddEntrie = new LeveledItemEntry
-                {
-                    Data = new LeveledItemEntryData
-                    {
-                        Level = 1,
-                        Count = 1,
-                        Reference = lliLink // set sublist with potions
-                    }
-                };
+        //    foreach (var lliLink in itemLLists)
+        //    {
+        //        var lVLIToAddEntrie = new LeveledItemEntry
+        //        {
+        //            Data = new LeveledItemEntryData
+        //            {
+        //                Level = 1,
+        //                Count = 1,
+        //                Reference = lliLink // set sublist with potions
+        //            }
+        //        };
 
-                lVLIToAdd.Entries.Add(lVLIToAddEntrie);
-            }
+        //        lVLIToAdd.Entries.Add(lVLIToAddEntrie);
+        //    }
 
-            return lVLIToAdd.FormKey;
-        }
+        //    return lVLIToAdd.FormKey;
+        //}
 
         private static bool isCheckPlayer = true;
         static readonly FormKey playerFormKey = FormKey.Factory("000007:Skyrim.esm");
