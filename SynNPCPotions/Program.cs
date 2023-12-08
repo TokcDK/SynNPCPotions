@@ -45,21 +45,8 @@ namespace SynNPCPotions
 
                 patchedNpcCount++;
 
-                bool isFound = false;
-                var lVLIToAddFormKey = FormKey.Null;
-
-                // search custom packs
-                foreach (var customPack in settings.CustomPacks)
-                {
-                    if (!npcGetter.EditorID.HasAnyFromList(customPack.EDIDCheckList)) continue;
-
-                    lVLIToAddFormKey = SetLLI(state, customPack.ItemsToAdd);
-
-                    isFound = true;
-                    break;
-                }
-                if (!isFound) lVLIToAddFormKey = baselVLIToAddFormKey; // set base to add instead
-
+                FormKey lVLIToAddFormKey = TryGetLLI(settings.CustomPacks, npcGetter, baselVLIToAddFormKey, state);
+                
                 // add potions list
                 var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
                 if (npcEdit.Items == null) npcEdit.Items = new Noggog.ExtendedList<ContainerEntry>();
@@ -70,6 +57,18 @@ namespace SynNPCPotions
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+        }
+
+        private static FormKey TryGetLLI(HashSet<CustomPack> customPacks, INpcGetter npcGetter, FormKey baselVLIToAddFormKey, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        {
+            // search custom packs
+            foreach (var customPack in customPacks)
+            {
+                if (!npcGetter.EditorID.HasAnyFromList(customPack.EDIDCheckList)) continue;
+
+                return SetLLI(state, customPack.ItemsToAdd);
+            }
+            return baselVLIToAddFormKey; // set base to add instead
         }
 
         private static void CheckRemoveNPCPotionsScript(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, INpcGetter npcGetter)
