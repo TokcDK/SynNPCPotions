@@ -1,7 +1,7 @@
 ﻿using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Skyrim;
-using StringCompareSettings;
+using SettingsExtensions;
 using System.Collections.Generic;
 using System.Linq;
 

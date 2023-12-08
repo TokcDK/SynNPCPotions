@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace StringCompareSettings
+namespace SettingsExtensions
 {
     public class StringCompareSetting
     {
@@ -49,6 +49,10 @@ namespace StringCompareSettings
     public static class StringCompareHelpers
     {
         //public static bool IsUsingList = false;
+        public static bool HasAnyValidValue(this HashSet<StringCompareSettingGroup> list)
+        {
+            return list.Count > 0 && list.Any(g => g.StringsList.Any(s => !string.IsNullOrWhiteSpace(s.Name)));
+        }
 
         public static bool HasAnyFromList(this string? inputString, IEnumerable<StringCompareSettingContainer> list, IEnumerable<StringCompareSettingContainer>? blackList = null)
         {
@@ -82,7 +86,7 @@ namespace StringCompareSettings
                 {
                     if (group == null) continue;
 
-                    foreach(var setting in group.StringsList)
+                    foreach (var setting in group.StringsList)
                     {
                         if (setting == null) continue;
 

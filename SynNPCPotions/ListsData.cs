@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
-using StringCompareSettings;
+using SettingsExtensions;
 
 namespace SynNPCPotions
 {

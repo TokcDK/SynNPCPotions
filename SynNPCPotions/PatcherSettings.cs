@@ -2,7 +2,7 @@
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis.Settings;
-using StringCompareSettings;
+using SettingsExtensions;
 
 namespace SynNPCPotions
 {
