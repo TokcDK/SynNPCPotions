@@ -417,17 +417,23 @@ namespace SynNPCPotions
         public bool RemoveNPCPotionsScript = true;
         [SynthesisOrder]
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
-        public HashSet<CustomPack> CustomPacks = new();
+        public HashSet<CustomPack> CustomPacks = ListsData.DefaultLists;
     }
 
     public class CustomPack
     {
         [SynthesisOrder]
-        [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
-        public HashSet<StringCompareSettingGroup> EDIDCheckList = new();
+        [SynthesisTooltip($"Include Npc if the Npc EdId is valid and not in {nameof(NpcEdIdExclude)}.")]
+        public HashSet<StringCompareSettingGroup> NpcEdIdInclude = new();
         [SynthesisOrder]
-        [SynthesisTooltip("Check also npc name using EDIDCheckList list")]
-        public bool CheckNpcName = true;
+        [SynthesisTooltip($"Any npc edid equal of any included here will be skipped")]
+        public HashSet<StringCompareSettingGroup> NpcEdIdExclude = new();
+        [SynthesisOrder]
+        [SynthesisTooltip($"Include Npc class if the Npc class EdId is valid and not in {nameof(NpcEdIdExclude)}.")]
+        public HashSet<StringCompareSettingGroup> NpcClassEdIdInclude = new();
+        [SynthesisOrder]
+        [SynthesisTooltip($"Any npc class edid equal of any included here will be skipped")]
+        public HashSet<StringCompareSettingGroup> NpcClassEdIdExclude = new();
         [SynthesisOrder]
         [SynthesisTooltip("Items list to add")]
         public HashSet<CustomItem> ItemsToAdd = new();

@@ -24,6 +24,9 @@ namespace SynNPCPotions
             var lItemPotionRestoreHealthFormKey = FormKey.Factory("03A16A:Skyrim.esm"); // example leveled list of health restore potions
             var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey).Record;
 
+            if (settings.CustomPacks.Count == 0) settings.CustomPacks = settings.BaseItems;
+
+
             // set in main list
             var item = new CustomItem()
             {
@@ -70,7 +73,7 @@ namespace SynNPCPotions
             // search custom packs
             foreach (var customPack in customPacks)
             {
-                if (!npcGetter.EditorID.HasAnyFromList(customPack.EDIDCheckList)) continue;
+                if (!npcGetter.EditorID.HasAnyFromList(customPack.NpcEdIdInclude)) continue;
 
                 return SetLLI(state, customPack.ItemsToAdd);
             }
