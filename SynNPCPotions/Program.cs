@@ -21,22 +21,11 @@ namespace SynNPCPotions
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var settings = Settings.Value;
-            var lItemPotionRestoreHealthFormKey = FormKey.Factory("03A16A:Skyrim.esm"); // example leveled list of health restore potions
-            var lItemPotionRestoreHealth = state.LinkCache.ResolveContext<ILeveledItem, ILeveledItemGetter>(lItemPotionRestoreHealthFormKey).Record;
 
-            if (settings.CustomPacks.Count == 0) settings.CustomPacks = settings.BaseItems;
-
-
-            // set in main list
-            var item = new CustomItem()
+            if (settings.CustomPacks.Count == 0)
             {
-                Items = new HashSet<FormLink<IItemGetter>>() { (FormLink<IItemGetter>)(lItemPotionRestoreHealth as IItemGetter).ToLink() },
-                LLICount = 5,
-                LLIChance = 10,
-            };
-            List<CustomItem> items = new() { item };
-
-            var baselVLIToAddFormKey = SetLLI(state, items); // create base lli
+                Console.WriteLine("Nothing to add. Finished..");
+            }
 
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
@@ -48,27 +37,54 @@ namespace SynNPCPotions
 
                 patchedNpcCount++;
 
+                var npcEdId = npcGetter.EditorID;
+                var npcClass = npcGetter.Class == null || npcGetter.Class.IsNull || npcGetter.Class.FormKeyNullable == null ? null :  state.LinkCache.Resolve<IClassGetter>(npcGetter.Class.FormKey);
+                if (npcClass == null) continue;
+
+                var npcClassEdId = npcClass.EditorID;
+                var itemsToAdd = new List<CustomItem>();
+                foreach (var data in settings.CustomPacks)
+                {
+                    if (npcEdId.HasAnyFromList(data.NpcEdIdExclude)) continue;
+                    if (npcClassEdId.HasAnyFromList(data.NpcClassEdIdExclude)) continue;
+                    if (!npcEdId.HasAnyFromList(data.NpcEdIdInclude) 
+                        && !npcClassEdId.HasAnyFromList(data.NpcClassEdIdInclude)) continue;
+
+                    itemsToAdd.AddRange(data.ItemsToAdd);
+                }
+
+                if (itemsToAdd.Count == 0) continue;
+
                 // add potions list
-                FormKey lVLIToAddFormKey = TryGetLLI(settings.CustomPacks, npcGetter, baselVLIToAddFormKey, state);
-                AddPotions(npcGetter, lVLIToAddFormKey, state);
+                AddPotions(npcGetter, itemsToAdd, state);
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
         }
 
-        private static void AddPotions(INpcGetter npcGetter, FormKey lVLIToAddFormKey, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        private static void AddPotions(INpcGetter npcGetter, List<CustomItem> itemsToAdd, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
             npcEdit.Items ??= new Noggog.ExtendedList<ContainerEntry>();
 
-            var entrie = new ContainerEntry { Item = new ContainerItem() };
-            entrie.Item.Item.FormKey = lVLIToAddFormKey;
-            entrie.Item.Count = 1;
+            foreach(var items in itemsToAdd)
+            {
+                var lList = state.PatchMod.LeveledItems.GetOrAddAsOverride();
+
+                var level = items.LLILevel;
+                var flags = items.LLIFlags;
+                foreach (var item in items.Items)
+                {
+                    var entrie = new ContainerEntry { Item = new ContainerItem() };
+                    entrie.Item.Item.FormKey = item.Items;
+                    entrie.Item.Count = 1;
+                }
+            }
 
             npcEdit.Items.Add(entrie);
         }
 
-        private static FormKey TryGetLLI(HashSet<CustomPack> customPacks, INpcGetter npcGetter, FormKey baselVLIToAddFormKey, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        private static FormKey TryGetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             // search custom packs
             foreach (var customPack in customPacks)
@@ -77,7 +93,7 @@ namespace SynNPCPotions
 
                 return SetLLI(state, customPack.ItemsToAdd);
             }
-            return baselVLIToAddFormKey; // set base to add instead
+            return FormKey.Null;
         }
 
         private static void CheckRemoveNPCPotionsScript(IPatcherState<ISkyrimMod, ISkyrimModGetter> state, INpcGetter npcGetter)
