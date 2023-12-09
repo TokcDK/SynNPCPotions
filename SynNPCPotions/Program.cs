@@ -37,31 +37,36 @@ namespace SynNPCPotions
 
                 if (!IsValidNpc(npcGetter, state, settings)) continue;
 
-                var npcEdId = npcGetter.EditorID;
-                var npcClass = npcGetter.Class == null || npcGetter.Class.IsNull || npcGetter.Class.FormKeyNullable == null ? null :  state.LinkCache.Resolve<IClassGetter>(npcGetter.Class.FormKey);
-                if (npcClass == null) continue;
+                if (!TryGetItemsToAdd(npcGetter, settings, state, out var itemsToAdd)) continue;
 
-                var npcClassEdId = npcClass.EditorID;
-                var itemsToAdd = new List<LeveledItemToAddData>();
-                foreach (var data in settings.CustomPacks)
-                {
-                    if (npcEdId.HasAnyFromList(data.NpcEdIdExclude)) continue;
-                    if (npcClassEdId.HasAnyFromList(data.NpcClassEdIdExclude)) continue;
-                    if (!npcEdId.HasAnyFromList(data.NpcEdIdInclude) 
-                        && !npcClassEdId.HasAnyFromList(data.NpcClassEdIdInclude)) continue;
-
-                    itemsToAdd.AddRange(data.ItemsToAdd);
-                }
-
-                if (itemsToAdd.Count == 0) continue;
-
-                // add potions list
                 AddPotions(npcGetter, itemsToAdd, state);
 
                 patchedNpcCount++;
             }
 
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
+        }
+
+        private static bool TryGetItemsToAdd(INpcGetter npcGetter, PatcherSettings settings, IPatcherState<ISkyrimMod, ISkyrimModGetter> state, out List<LeveledItemToAddData> itemsToAdd)
+        {
+            itemsToAdd = new List<LeveledItemToAddData>();
+
+            var npcEdId = npcGetter.EditorID;
+            var npcClass = npcGetter.Class == null || npcGetter.Class.IsNull || npcGetter.Class.FormKeyNullable == null ? null : state.LinkCache.Resolve<IClassGetter>(npcGetter.Class.FormKey);
+            if (npcClass == null) return false;
+            var npcClassEdId = npcClass.EditorID;
+
+            foreach (var data in settings.CustomPacks)
+            {
+                if (npcEdId.HasAnyFromList(data.NpcEdIdExclude)) continue;
+                if (npcClassEdId.HasAnyFromList(data.NpcClassEdIdExclude)) continue;
+                if (!npcEdId.HasAnyFromList(data.NpcEdIdInclude)
+                    && !npcClassEdId.HasAnyFromList(data.NpcClassEdIdInclude)) continue;
+
+                itemsToAdd.AddRange(data.ItemsToAdd);
+            }
+
+            return itemsToAdd.Count > 0;
         }
 
         static readonly Dictionary<string, FormKey> _lItemsCache = new();
