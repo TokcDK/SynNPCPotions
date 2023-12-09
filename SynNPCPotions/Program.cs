@@ -31,6 +31,10 @@ namespace SynNPCPotions
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
+                if(npcGetter.EditorID == "EncBandit01TemplateMelee")
+                {
+                }
+
                 // skip invalid
                 CheckRemoveNPCPotionsScript(state, npcGetter);
 

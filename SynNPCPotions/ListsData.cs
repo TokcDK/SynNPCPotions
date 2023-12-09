@@ -750,30 +750,6 @@ namespace SynNPCPotions
                               },
                               new StringCompareSetting()
                               {
-                                   Name = "Warrior",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
-                                   Name = "Melee",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
-                                   Name = "Warrior",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
-                                   Name = "Vigilant",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
                                    Name = "Boss",
                                    Compare= CompareType.Contains,
                                    IgnoreCase = true,
