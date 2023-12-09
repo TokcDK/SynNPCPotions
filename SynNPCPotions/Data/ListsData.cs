@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
-using SettingsExtensions;
+using SynNPCPotions.Helpers;
 
-namespace SynNPCPotions
+namespace SynNPCPotions.Data
 {
     public static class ListsData
     {

@@ -2,7 +2,8 @@
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis.Settings;
-using SettingsExtensions;
+using SynNPCPotions.Data;
+using SynNPCPotions.Helpers;
 
 namespace SynNPCPotions
 {

@@ -1,11 +1,10 @@
 ﻿using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Plugins.Records;
 using Mutagen.Bethesda.Skyrim;
-using SettingsExtensions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SynAutomaticPerks
+namespace SynNPCPotions.Helpers
 {
     public static class ListHelpers
     {
