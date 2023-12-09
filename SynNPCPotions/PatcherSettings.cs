@@ -183,6 +183,9 @@ namespace SynNPCPotions
     public class CustomPack
     {
         [SynthesisOrder]
+        [SynthesisTooltip($"Pack name. For clarify and using in leveled item EDID.")]
+        public string Name = "";
+        [SynthesisOrder]
         [SynthesisTooltip($"Include Npc if the Npc EdId is valid and not in {nameof(NpcEdIdExclude)}.")]
         public HashSet<StringCompareSettingGroup> NpcEdIdInclude = new();
         [SynthesisOrder]

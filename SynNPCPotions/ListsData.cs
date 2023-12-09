@@ -15,7 +15,7 @@ namespace SynNPCPotions
         {
             new CustomPack()
             {
-                // warrior
+                Name= "Warrior",
                 NpcEdIdInclude = new HashSet<StringCompareSettingGroup>()
                 {
                     new StringCompareSettingGroup()
@@ -340,7 +340,7 @@ namespace SynNPCPotions
             },
             new CustomPack()
             {
-                // mage
+                Name= "Mage",
                 NpcEdIdInclude = new HashSet<StringCompareSettingGroup>()
                 {
                     new StringCompareSettingGroup()
@@ -723,7 +723,7 @@ namespace SynNPCPotions
             },
             new CustomPack()
             {
-                // ranger
+                Name= "Ranger",
                 NpcEdIdInclude = new HashSet<StringCompareSettingGroup>()
                 {
                     new StringCompareSettingGroup()
