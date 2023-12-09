@@ -3,6 +3,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Plugins;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.Synthesis;
+using Noggog;
 using SettingsExtensions;
 
 namespace SynNPCPotions
@@ -31,10 +32,6 @@ namespace SynNPCPotions
             int patchedNpcCount = 0;
             foreach (var npcGetter in state.LoadOrder.PriorityOrder.Npc().WinningOverrides())
             {
-                if(npcGetter.EditorID == "EncBandit01TemplateMelee")
-                {
-                }
-
                 // skip invalid
                 CheckRemoveNPCPotionsScript(state, npcGetter);
 
@@ -67,6 +64,7 @@ namespace SynNPCPotions
             Console.WriteLine($"Patched {patchedNpcCount} npc records.");
         }
 
+        static readonly Dictionary<string, FormKey> _lItemsCache = new();
         private static void AddPotions(INpcGetter npcGetter, List<LeveledItemDataToAdd> itemsToAdd, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
@@ -74,33 +72,56 @@ namespace SynNPCPotions
 
             foreach(var items in itemsToAdd)
             {
-                var litemEdId = !string.IsNullOrWhiteSpace(items.EDID) ? items.EDID : GetLLIEdIdAuto(npcGetter, items) ;
-                
-                var lList = state.PatchMod.LeveledItems.AddNew(litemEdId);
-                lList.Flags = items.LLIFlags;
-                lList.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+                var cacheName = $"{items.LLILevel}|{items.LLICount}|{(uint)items.LLIFlags}|{string.Join("|", items.Items.Select(i => i.FormKey))}";
 
-                foreach (var item in items.Items)
+                FormKey lItemToAdd = default;
+                if (_lItemsCache.ContainsKey(cacheName))
                 {
-                    var lItemEntry = new LeveledItemEntry()
-                    {
-                        Data = new LeveledItemEntryData()
-                        {
-                            Level = (short)items.LLILevel,
-                            Count = (short)items.LLICount,
-                            Reference = item
-                        }
-                    };
-
-                    lList.Entries.Add(lItemEntry);
+                    lItemToAdd = _lItemsCache[cacheName];
+                }
+                else
+                {
+                    lItemToAdd = GetLItemFormKey(npcGetter, items, state);
+                    _lItemsCache.Add(cacheName, lItemToAdd);
                 }
 
-                var npcItem = new ContainerEntry { Item = new ContainerItem() };
-                npcItem.Item.Item.FormKey = lList.FormKey;
-                npcItem.Item.Count = 1;
-
-                npcEdit.Items.Add(npcItem);
+                npcEdit.Items.Add(GetContainerEntry(lItemToAdd));
             }
+        }
+
+        private static FormKey GetLItemFormKey(INpcGetter npcGetter, LeveledItemDataToAdd items, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        {
+            var litemEdId = !string.IsNullOrWhiteSpace(items.EDID) ? items.EDID : GetLLIEdIdAuto(npcGetter, items);
+
+            var lList = state.PatchMod.LeveledItems.AddNew(litemEdId);
+            lList.Flags = items.LLIFlags;
+            lList.Entries = new Noggog.ExtendedList<LeveledItemEntry>();
+
+            foreach (var item in items.Items)
+            {
+                var lItemEntry = new LeveledItemEntry()
+                {
+                    Data = new LeveledItemEntryData()
+                    {
+                        Level = (short)items.LLILevel,
+                        Count = (short)items.LLICount,
+                        Reference = item
+                    }
+                };
+
+                lList.Entries!.Add(lItemEntry);
+            }
+
+            return lList.FormKey;
+        }
+
+        private static ContainerEntry GetContainerEntry(FormKey lItemToAdd)
+        {
+            var npcItem = new ContainerEntry { Item = new ContainerItem() };
+            npcItem.Item.Item.FormKey = lItemToAdd;
+            npcItem.Item.Count = 1;
+
+            return npcItem;  
         }
 
         private static string GetLLIEdIdAuto(INpcGetter npcGetter, LeveledItemDataToAdd items)
