@@ -233,7 +233,7 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<LeveledItemToAddData>()
+                Items = new HashSet<LeveledItemToAddData>()
                 {
                     new LeveledItemToAddData()
                     {
@@ -635,7 +635,7 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<LeveledItemToAddData>()
+                Items = new HashSet<LeveledItemToAddData>()
                 {
                     new LeveledItemToAddData()
                     {
@@ -861,7 +861,7 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<LeveledItemToAddData>()
+                Items = new HashSet<LeveledItemToAddData>()
                 {
                     new LeveledItemToAddData()
                     {

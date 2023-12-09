@@ -24,7 +24,7 @@ namespace SynNPCPotions
         {
             var settings = Settings.Value;
 
-            if (settings.CustomPacks.Count == 0)
+            if (settings.ItemsToAdd.Count == 0)
             {
                 Console.WriteLine("Nothing to add. Finished..");
                 return;
@@ -57,14 +57,14 @@ namespace SynNPCPotions
             if (npcClass == null) return false;
             var npcClassEdId = npcClass.EditorID;
 
-            foreach (var data in settings.CustomPacks)
+            foreach (var data in settings.ItemsToAdd)
             {
                 if (npcEdId.HasAnyFromList(data.NpcEdIdExclude)) continue;
                 if (npcClassEdId.HasAnyFromList(data.NpcClassEdIdExclude)) continue;
                 if (!npcEdId.HasAnyFromList(data.NpcEdIdInclude)
                     && !npcClassEdId.HasAnyFromList(data.NpcClassEdIdInclude)) continue;
 
-                itemsToAdd.AddRange(data.ItemsToAdd);
+                itemsToAdd.AddRange(data.Items);
             }
 
             return itemsToAdd.Count > 0;

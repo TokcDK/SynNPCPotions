@@ -177,7 +177,7 @@ namespace SynNPCPotions
         public bool RemoveNPCPotionsScript = true;
         [SynthesisOrder]
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
-        public HashSet<ItemsToAddData> CustomPacks = ListsData.DefaultLists;
+        public HashSet<ItemsToAddData> ItemsToAdd = ListsData.DefaultLists;
     }
 
     public class ItemsToAddData
@@ -196,7 +196,7 @@ namespace SynNPCPotions
         public HashSet<StringCompareSettingGroup> NpcClassEdIdExclude = new();
         [SynthesisOrder]
         [SynthesisTooltip("Items list to add")]
-        public HashSet<LeveledItemToAddData> ItemsToAdd = new();
+        public HashSet<LeveledItemToAddData> Items = new();
     }
 
     public class LeveledItemToAddData
