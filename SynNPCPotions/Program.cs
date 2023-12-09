@@ -42,7 +42,7 @@ namespace SynNPCPotions
                 if (npcClass == null) continue;
 
                 var npcClassEdId = npcClass.EditorID;
-                var itemsToAdd = new List<LeveledItemDataToAdd>();
+                var itemsToAdd = new List<LeveledItemToAddData>();
                 foreach (var data in settings.CustomPacks)
                 {
                     if (npcEdId.HasAnyFromList(data.NpcEdIdExclude)) continue;
@@ -65,14 +65,14 @@ namespace SynNPCPotions
         }
 
         static readonly Dictionary<string, FormKey> _lItemsCache = new();
-        private static void AddPotions(INpcGetter npcGetter, List<LeveledItemDataToAdd> itemsToAdd, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        private static void AddPotions(INpcGetter npcGetter, List<LeveledItemToAddData> itemsToAdd, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var npcEdit = state.PatchMod.Npcs.GetOrAddAsOverride(npcGetter);
             npcEdit.Items ??= new Noggog.ExtendedList<ContainerEntry>();
 
             foreach(var items in itemsToAdd)
             {
-                var cacheName = $"{items.LLILevel}|{items.LLICount}|{(uint)items.LLIFlags}|{string.Join("|", items.Items.Select(i => i.FormKey))}";
+                var cacheName = $"{items.Level}|{items.Count}|{(uint)items.LLIFlags}|{string.Join("|", items.Items.Select(i => i.FormKey))}";
 
                 FormKey lItemToAdd = default;
                 if (_lItemsCache.ContainsKey(cacheName))
@@ -89,7 +89,7 @@ namespace SynNPCPotions
             }
         }
 
-        private static FormKey GetLItemFormKey(INpcGetter npcGetter, LeveledItemDataToAdd items, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
+        private static FormKey GetLItemFormKey(INpcGetter npcGetter, LeveledItemToAddData items, IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             var litemEdId = !string.IsNullOrWhiteSpace(items.EDID) ? items.EDID : GetLLIEdIdAuto(npcGetter, items);
 
@@ -103,8 +103,8 @@ namespace SynNPCPotions
                 {
                     Data = new LeveledItemEntryData()
                     {
-                        Level = (short)items.LLILevel,
-                        Count = (short)items.LLICount,
+                        Level = (short)items.Level,
+                        Count = (short)items.Count,
                         Reference = item
                     }
                 };
@@ -124,9 +124,9 @@ namespace SynNPCPotions
             return npcItem;  
         }
 
-        private static string GetLLIEdIdAuto(INpcGetter npcGetter, LeveledItemDataToAdd items)
+        private static string GetLLIEdIdAuto(INpcGetter npcGetter, LeveledItemToAddData items)
         {
-            return $"LItem{npcGetter.EditorID}NPCPotionsL{items.LLILevel}C{items.Items.Count}";
+            return $"LItem{npcGetter.EditorID}NPCPotionsL{items.Level}C{items.Items.Count}";
         }
 
         //private static FormKey TryGetLLI(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)

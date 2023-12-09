@@ -177,14 +177,11 @@ namespace SynNPCPotions
         public bool RemoveNPCPotionsScript = true;
         [SynthesisOrder]
         [SynthesisTooltip("Custom items pack,count and chance to appear. Will override general settings for items(count,chance and items)")]
-        public HashSet<CustomPack> CustomPacks = ListsData.DefaultLists;
+        public HashSet<ItemsToAddData> CustomPacks = ListsData.DefaultLists;
     }
 
-    public class CustomPack
+    public class ItemsToAddData
     {
-        [SynthesisOrder]
-        [SynthesisTooltip($"Pack name. For clarify and using in leveled item EDID.")]
-        public string Name = "";
         [SynthesisOrder]
         [SynthesisTooltip($"Include Npc if the Npc EdId is valid and not in {nameof(NpcEdIdExclude)}.")]
         public HashSet<StringCompareSettingGroup> NpcEdIdInclude = new();
@@ -199,26 +196,26 @@ namespace SynNPCPotions
         public HashSet<StringCompareSettingGroup> NpcClassEdIdExclude = new();
         [SynthesisOrder]
         [SynthesisTooltip("Items list to add")]
-        public HashSet<LeveledItemDataToAdd> ItemsToAdd = new();
+        public HashSet<LeveledItemToAddData> ItemsToAdd = new();
     }
 
-    public class LeveledItemDataToAdd
+    public class LeveledItemToAddData
     {
         [SynthesisOrder]
         [SynthesisTooltip($"LeveledItem editor id")]
         public string EDID { get; set; } = "";
         [SynthesisOrder]
         [SynthesisTooltip($"Count of item record.\nWhen set {nameof(LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer)} flag, item will appear only when value is lesser of player's current level.")]
-        public int LLILevel = 1;
+        public int Level = 1;
         [SynthesisOrder]
         [SynthesisTooltip($"Count of item record.\nWhen set {nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag, it will set copies count with standalone chance for each.")]
-        public int LLICount = 1;
+        public int Count = 1;
         [SynthesisOrder]
-        [SynthesisTooltip($"Appear chance of item.\nWhen set {nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag, chance will be calculated {nameof(LLICount)} times like it different items")]
-        public int LLIChance = 10;
+        [SynthesisTooltip($"Appear % chance of item.\nWhen set {nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag, chance will be calculated {nameof(Count)} times like it different items")]
+        public int Chance = 10;
         [SynthesisOrder]
         [SynthesisTooltip($"Item leveled list flags. "
-            + $"\n\n{nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag will make calculate appear chance {nameof(LLICount)} times like like it {nameof(LLICount)} copies of item."
+            + $"\n\n{nameof(LeveledItem.Flag.CalculateForEachItemInCount)} flag will make calculate appear chance {nameof(Count)} times like like it {nameof(Count)} copies of item."
             + $"\n{nameof(LeveledItem.Flag.CalculateFromAllLevelsLessThanOrEqualPlayer)} flag will make possible to appear the item only when level of player is same or greater of npc for which item was added."
             + $"\n{nameof(LeveledItem.Flag.UseAll)} flag will make a chance for all items in list to appear at once."
             )]

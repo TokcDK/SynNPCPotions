@@ -11,11 +11,10 @@ namespace SynNPCPotions
 {
     public static class ListsData
     {
-        public static HashSet<CustomPack> DefaultLists { get; internal set; } = new HashSet<CustomPack>()
+        public static HashSet<ItemsToAddData> DefaultLists { get; internal set; } = new HashSet<ItemsToAddData>()
         {
-            new CustomPack()
+            new ItemsToAddData()
             {
-                Name= "Warrior",
                 NpcEdIdInclude = new HashSet<StringCompareSettingGroup>()
                 {
                     new StringCompareSettingGroup()
@@ -234,103 +233,103 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<LeveledItemDataToAdd>()
+                ItemsToAdd = new HashSet<LeveledItemToAddData>()
                 {
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 60,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 60,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 10,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 10,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 20,
-                        LLICount= 1,
-                        LLIChance= 20,
+                        Level= 20,
+                        Count= 1,
+                        Chance= 20,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 30,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 30,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 40,
-                        LLICount= 1,
-                        LLIChance= 40,
+                        Level= 40,
+                        Count= 1,
+                        Chance= 40,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 10,
-                        LLICount= 1,
-                        LLIChance= 10,
+                        Level= 10,
+                        Count= 1,
+                        Chance= 10,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 20,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 20,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 20,
-                        LLICount= 1,
-                        LLIChance= 20,
+                        Level= 20,
+                        Count= 1,
+                        Chance= 20,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 40,
-                        LLICount= 2,
-                        LLIChance= 40,
+                        Level= 40,
+                        Count= 2,
+                        Chance= 40,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
@@ -338,9 +337,8 @@ namespace SynNPCPotions
                     },
                 }
             },
-            new CustomPack()
+            new ItemsToAddData()
             {
-                Name= "Mage",
                 NpcEdIdInclude = new HashSet<StringCompareSettingGroup>()
                 {
                     new StringCompareSettingGroup()
@@ -637,83 +635,83 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<LeveledItemDataToAdd>()
+                ItemsToAdd = new HashSet<LeveledItemToAddData>()
                 {
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 60,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 60,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 10,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 10,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagickaBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 20,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 20,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagickaBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 40,
-                        LLICount= 1,
-                        LLIChance= 40,
+                        Level= 40,
+                        Count= 1,
+                        Chance= 40,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagickaBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 20,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 20,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 20,
-                        LLICount= 1,
-                        LLIChance= 20,
+                        Level= 20,
+                        Count= 1,
+                        Chance= 20,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 10,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 10,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
@@ -721,9 +719,8 @@ namespace SynNPCPotions
                     },
                 }
             },
-            new CustomPack()
+            new ItemsToAddData()
             {
-                Name= "Ranger",
                 NpcEdIdInclude = new HashSet<StringCompareSettingGroup>()
                 {
                     new StringCompareSettingGroup()
@@ -864,93 +861,93 @@ namespace SynNPCPotions
                     }
                 },
                 NpcClassEdIdExclude= new HashSet<StringCompareSettingGroup>(),
-                ItemsToAdd = new HashSet<LeveledItemDataToAdd>()
+                ItemsToAdd = new HashSet<LeveledItemToAddData>()
                 {
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 60,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 60,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStamina.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 10,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 10,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 20,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 20,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 40,
-                        LLICount= 1,
-                        LLIChance= 40,
+                        Level= 40,
+                        Count= 1,
+                        Chance= 40,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreStaminaBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 30,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 30,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealth.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 20,
-                        LLICount= 1,
-                        LLIChance= 40,
+                        Level= 20,
+                        Count= 1,
+                        Chance= 40,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 40,
-                        LLICount= 1,
-                        LLIChance= 40,
+                        Level= 40,
+                        Count= 1,
+                        Chance= 40,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreHealthBest.FormKey,
                         }
                     },
-                    new LeveledItemDataToAdd()
+                    new LeveledItemToAddData()
                     {
-                        LLILevel= 1,
-                        LLICount= 1,
-                        LLIChance= 15,
+                        Level= 1,
+                        Count= 1,
+                        Chance= 15,
                         Items = new HashSet<FormLink<IItemGetter>>()
                         {
                             Mutagen.Bethesda.FormKeys.SkyrimLE.Skyrim.LeveledItem.LItemPotionRestoreMagicka.FormKey,
