@@ -24,24 +24,6 @@ namespace SynNPCPotions
                          {
                               new StringCompareSetting()
                               {
-                                   Name = "Missile",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
-                                   Name = "Ranged",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
-                                   Name = "Ranger",
-                                   Compare= CompareType.Contains,
-                                   IgnoreCase = true,
-                              },
-                              new StringCompareSetting()
-                              {
                                    Name = "Warrior",
                                    Compare= CompareType.Contains,
                                    IgnoreCase = true,
