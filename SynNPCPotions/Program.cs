@@ -27,6 +27,7 @@ namespace SynNPCPotions
             if (settings.CustomPacks.Count == 0)
             {
                 Console.WriteLine("Nothing to add. Finished..");
+                return;
             }
 
             int patchedNpcCount = 0;
